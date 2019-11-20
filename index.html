@@ -345,21 +345,4 @@ location.href = 'https://www.microsoft.com/en-gb/download/internet-explorer.aspx
   </script>
 </body>
 
-<script src="https://maps.london.gov.uk/utils/fair-analytics-client.js"></script>
-<script>
-var fa = window.fairAnalytics({
-  url: "https://maps.london.gov.uk/fair-analytics/"
-});
-
-if (!navigator.doNotTrack) {
-  window.fa
-  .send({
-    event: "pageView",
-    pathname: window.location.href
-  })
-  .catch(function(err) {
-    console.error(err.message);
-  });
-}
-</script>
 </html>

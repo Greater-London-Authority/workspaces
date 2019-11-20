@@ -1,0 +1,62 @@
+$font-stack: Arial, sans-serif;
+
+$mayoralContentDefault: #9E0059;
+$mayoralContentHover: #000000;
+$mayoralContentActive: #EE266D;
+$assemblycontentDefault: #00577D;
+$assemblycontentHover: #000000;
+$assemblycontentActive: #00AEEF;
+$genericcontentDefault: #353D42;
+$genericcontentHover: #000000;
+$genericcontentActive: #868B8E;
+
+$navigationTitlesIconsDefault: #353D42;
+$navigationTitlesIconsHover: #000000;
+$navigationTitlesIconsActive: #AFB2B3;
+$navigationArrowsDefault: #D7D8D9;
+$navigationArrowsHover: #000000;
+$navigationArrowsActive: #AFB2B3;
+$navigationBackgroundDefault: #F5F5F6;
+$navigationBackgroundHover: #F5F5F6;
+$navigationBackgroundActive: #F5F5F6;
+
+$generalBodycopy: #353D42;
+$generalKeylines: #E1E2E3;
+$generalWidgets: #FFFFFF;
+$generalScaledbackground: #FFFFFF;
+$generalContentAreabackground: #F5F5F6;
+$generalHeaderFooterbackground: #353D42;
+$generalStatus: #EE266D;
+$generalWarning: #BC9109;
+$generalError: #E0001B;
+
+$twitterLinksDefault: #55ACEE;
+$twitterLinksHover: #4081B2;
+$twitterLinksActive: #5CB8FF;
+$youtubeLinksDefault: #E52D27;
+$youtubeLinksHover: #B31217;
+$youtubeLinksActive: #CD201F;
+$facebookLinksDefault: #3B5998;
+$facebookLinksHover: #283B66;
+$facebookLinksActive: #4668B2;
+$googleLinksDefault: #DB4437;
+$googleLinksHover: #B34439;
+$googleLinksActive: #E06055;
+$instagramLinksDefault: #BC2A8D;
+$instagramLinksHover: #8B074E;
+$instagramLinksActive: #CC49A6;
+$whatsappLinksDefault: #25D366;
+$whatsappLinksHover: #075E54;
+$whatsappLinksActive: #128C7E;
+
+@mixin border-radius() {
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+          border-radius: 2px;
+}
+
+@mixin drop-shadow() {
+    filter: drop-shadow( 0px 2px 1px #555);
+    -webkit-filter: drop-shadow( 0px 2px 1px #555);
+}

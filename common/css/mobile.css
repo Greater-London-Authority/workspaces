@@ -1,0 +1,553 @@
+
+#panel #inner {
+	padding:17px 15px 19px;background:white;
+}
+
+#search {
+	min-height:35px;
+	background:url(../img/dummy_locator2.jpg) no-repeat
+}
+#search_input {
+	width:100% !important;
+}
+.arcgisSearch .searchInputGroup, .arcgisSearch .searchExpandContainer {
+	float:none !important;
+}
+.arcgisSearch .searchBtn {
+	position:absolute !important;
+	right: 0 !important;
+	top: 0 !important;
+	z-index:100;
+}
+.arcgisSearch .searchGroup .searchInput, .arcgisSearch .searchBtn {
+	border-color:#999 !important;
+}
+.arcgisSearch .searchGroup .searchInput {
+	border-radius:4px !important;
+}
+.arcgisSearch .searchClear {
+	right:50px;
+}
+
+.arcgisSearch .searchMenu {
+	top:32px !important;
+}
+
+#search input::-webkit-input-placeholder {
+   color: #777;
+}
+#search input:-moz-placeholder {
+   color: #777;
+}
+#search input::-moz-placeholder {
+   color: #777;
+}
+#search input:-ms-input-placeholder {
+   color: #777;
+}
+
+#expand_map_button {
+	display:none;
+	background:url(../img/london_map.jpg);
+	border:1px solid #777;
+	color:black;
+	text-align:center;
+	font-size:30px;
+	box-shadow:0 1px 1px #888;
+	padding:3px !important;
+}
+#expand_map_button  img {
+	width:118px;
+	height:22px;
+	padding-top:6px;
+}
+
+.arcgisSearch .searchGroup .searchInput {
+	box-sizing:border-box !important;
+	height:34px !important;
+}
+
+#search.found #search_input {
+	font-weight:bold;
+	padding-left:28px;
+}
+
+.findme {
+	position:absolute;
+	top:5px;
+	z-index:10;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+	cursor:pointer;
+	left:191px;
+	left:-webkit-calc(100% - 75px);
+	left:-moz-calc(100% - 75px);
+}
+
+.big_button {
+	cursor:pointer;
+	display:none;margin-top:15px;
+	border-radius:4px;margin-bottom:-2px;padding: 8px;text-align:center;
+	background: #9E0059;font-weight:bold;color: white;font-size: 16px;
+}
+
+#search:hover .findme {
+	opacity:0.6;
+	filter:alpha(opacity=60);
+}
+
+#search .findme:hover, .findme:hover, .findme.searching {
+	opacity:0.85;
+	filter:alpha(opacity=85);
+}
+
+#search .hasValue .findme {
+	display:none !important;
+}
+.findme:active {
+	margin-top:1px;
+}
+.findme .zoomLocateButton {
+	background:url(../img/locate.png);
+	width:24px;
+	height:24px;
+
+}
+.findme.searching .zoomLocateButton {
+	-webkit-animation: spin .6s linear infinite;
+	animation: spin .6s linear infinite;
+}
+.findme span {
+	display:none;
+}
+
+
+.back_panel {
+	position:relative;
+	text-shadow:0px 1px 1px #420025;cursor:pointer;background:#9E0059;font-size:24px;font-weight:bold;color:white;text-align:center;line-height:49px;
+}
+.back_panel.blue {
+	background:#1f4da5;
+	text-shadow:0px 1px 1px #000842;
+}
+.back_panel img {
+	position:absolute;width:30px;left: 9px;top: 9px;
+}
+
+#backpage, body.min #panel {
+	display:none;
+}
+body.min #backpage {
+	display:block;
+}
+
+.esriAttribution{
+	display:none;
+}
+
+#mayor_holder {
+	padding:10px 0 9px;
+}
+
+#back_to_map, body.showinfo #backpage {
+	display:none;
+}
+body.showinfo #back_to_map {
+	display:block;
+}
+
+#back_to_map #content .button {
+	margin-top:10px !important;
+	margin-bottom:10px !important;
+}
+#back_to_map #share {
+	bottom:-15px !important;
+	left:13px !important;
+}
+
+
+/*
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+    width: 12px;
+}
+::-webkit-scrollbar:horizontal {
+    height: 12px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+}
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+*/
+
+.PHONE_holder a {
+	color:inherit !important;
+}
+
+#mayor_logo img {
+	display:block;margin:0 auto;width:200px
+}
+
+#buttons {
+	position:absolute;right:20px;top:20px;z-index:10;margin:-2px;
+}
+
+
+@media only screen and (max-height: 400px) {
+	#mayor_holder, #title_holder, #footer {
+		display:none !important;
+	}
+}
+
+@media  /*retina*/
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+	#mayor_holder {
+		padding: 10px 0 6px !important;
+	}
+	#mayor_logo img {
+		display:none;
+	}
+	#mayor_logo div {
+		display:inline-block;
+	}
+
+}
+
+@media only screen and (max-width: 600px) {
+
+	#legend_holder {
+		top:59px !important;
+		right:10px !important;
+	}
+	body.init_loader #footer, body.init_loader #mainLoader {
+		display:none;
+	}
+	#notifier {
+		top:47px !important;
+		z-index:10;
+	}
+	#renderer_holder {
+		display:none !important;
+	}
+	.esriControlsBR {
+		display:none !important;
+	}
+	#buttons {
+		top:auto;
+		bottom:10px;
+		right:10px !important;
+	}
+	#main_loader {
+		display:none;
+	}
+	#panel {
+		left:0 !important;
+		top:0 !important;
+		width:100% !important;
+		border-radius:0 !important;
+	}
+	#mol_about_logo {
+		margin-left:0 !important;
+		margin-top:20px;
+	}
+	.PHONE_holder {
+		display:block !important;
+		margin-top:20px;
+		margin-left:13px !important;
+	}
+	.PHONE_holder a {
+		color:#9e0059;
+	}
+
+	#panel #inner {
+		padding: 10px 9px 18px;
+	}
+	#bonus_filter_holder{
+		margin-top:-4px;
+	}
+	#big_add {
+		top:auto;
+		right:5px;
+		bottom:5px;
+	}
+
+	body .esriPopup {
+		display:none;
+	}
+
+	#minimise {
+		display:none;
+	}
+
+
+	body.placing_pin #header, body.placing_pin #search, body.placing_pin #footer, body.placing_pin #expand_map_button {
+		display:none !important;
+	}
+
+
+	body.placed_pin #header, body.placed_pin #footer, body.placed_pin #expand_map_button {
+		display:none !important;
+	}
+
+	body.placing_pin #cancel_add_holder{
+		margin-top:6px;
+	}
+
+	body.login #mylogin > div {
+		box-sizing:border-box;
+		width:97% !important;
+	}
+
+	body.login #mylogin img {
+		width:270px;
+		margin-top:5px;
+	}
+	#mylogin {
+		top:50% !important;
+		margin-top:-120px !important;
+	}
+
+
+	#white_panel {
+		border-radius:0;
+	}
+	.sa-icon {
+		display:none !important;
+	}
+	.sweet-alert {
+		/*top:11px !important;*/
+		margin-top:-220px !important;
+	}
+	#basemap_picker, .esriSimpleSliderTL {
+		top:auto !important;
+		right:auto !important;
+		bottom:10px;
+		left:10px;
+	}
+
+#basemap_picker {
+	right:10px !important;
+	left:auto;
+}
+.sweet-alert p {
+	max-height:200px;
+	overflow-y:auto;
+}
+#mapDiv_zoom_slider {
+	border-radius: 5px;
+	z-index:9 !important;
+}
+#transparency_button {
+	display:none !important;
+}
+	.esriSimpleSliderTL {
+		left:5px !important;
+	}
+	#clear_filters_button {
+		display:none !important;
+	}
+	#expand_map_button {
+		display:block !important;
+	}
+	body.min #filters {
+		display:none !important;
+	}
+	body.min #unminimise {
+		display:block;
+	}
+	body.min #extra_school_data {
+		display:none;
+	}
+
+
+
+	#thumb {
+		display:none !important;
+	}
+	#panel, #school_det {
+		width:100% !important;
+	}
+
+	#school_det .back_panel {
+		display:none !important;
+	}
+
+	body.min #more_school_info {
+		display:block !important;
+		margin:0 10px 10px;
+		background:#1f4da5;
+	}
+
+	.esriSimpleSlider div {
+		width:25px;
+		height:25px;
+	}
+
+	body.school_mode.min .title {
+		font-size:18px;
+		color:black;
+	}
+	body.school_mode.min .title::first-line {
+		font-size:18px;
+	}
+
+	body.min #mayor_holder, body.min #logo_holder, body.school_mode #mayor_holder, body.school_mode #logo_holder {
+		display:none;
+	}
+	.arcgisSearch .searchClear {
+		background-color:transparent;
+	}
+	#helper > div {
+		margin-left:0 !important;
+		margin-right:0 !important;
+	}
+	#helper {
+		margin-top:45px;
+	}
+	#contact {
+		padding-top:5px;
+		padding-bottom:2px;
+		margin:0 -6px;
+	}
+	#contact .left {
+		width:52%;
+		margin-right:5%;
+	}
+	#school_height_setting a {
+		color:#204690;
+	}
+	#school_mini_info {
+		margin:0 -1px 18px;
+		border-radius:0;
+		padding:7px 10px 9px;
+	}
+	#school_options.checkboxes > div:not(:last-child) {
+		-webkit-filter:hue-rotate(290deg);
+		-moz-filter:hue-rotate(290deg);
+		filter:hue-rotate(290deg);
+	}
+	#school_mini_info {
+		-webkit-filter:grayscale(1);
+		-moz-filter:grayscale(1);
+		filter:grayscale(1);
+	}
+	#big_stats {
+		margin:22px -18px 0;
+		border-radius:0;
+	}
+	#big_stats > div > div  {
+		font-size:11px;
+	}
+	#big_stats > div > div div {
+		padding-left:48px;
+	}
+
+	#school_mini_info > div {
+		font-size:14px;
+	}
+	#school_mini_info > div > div {
+		text-align:center;
+		padding-left:0;
+	}
+	#school_mini_info > div > div > div:first-child {
+		display:none;
+	}
+	#school_mini_info img {
+		position:relative;
+		padding-bottom:2px;
+	}
+
+	.findme .zoomLocateButton {
+		background:url(../img/crosshairs@2x.png);
+		width:24px;
+		height:24px;
+		background-size:24px;
+		margin-left:2px;
+	}
+
+	#gender_holder img {
+		margin-left:0;
+	}
+
+	#main_school_det {
+		padding:0px 15px 17px 16px;
+	}
+	.checkboxes {
+		margin-top:20px;
+	}
+	#route_info br {
+		display:block;
+	}
+	#route_extra {
+		margin-top:25px;
+	}
+	#num_schools_holder {
+		margin-top:10px;
+	}
+	#helper {
+		bottom:65px;
+		top:auto;
+		width:96%;
+		left:2%;
+	}
+
+	.help {
+		background:url(../img/question@2x.png);
+		background-size:16px;
+	}
+
+	#popularity {
+		margin-left:-5px;
+	}
+
+	label.css-label {
+		background-image:url(../img/checkboxes.png);
+		background-repeat:none;
+		background-size:17px;
+	}
+
+	#search #pinny {
+		opacity:0.8;
+		background:url(../img/redball@2x.png);
+		background-size:15px;
+		height:15px;
+	}
+
+	#independent_warning span {
+		display:none;
+	}
+
+	#route_prompt {
+		display:block !important;
+	}
+
+	#height_setting {
+		margin-top:12px !important;
+	}
+	#filter_advanced {
+		margin-top:14px !important;
+	}
+	#expand_map_button {
+		margin-bottom:5px;
+		margin-top:10px;
+		height:32px;
+	}
+
+}
+
+/** Target mobile webkit **/
+@media only screen and (max-width: 600px) and (-webkit-min-device-pixel-ratio:0) {
+	#mapDiv_gc text{
+		text-shadow:none;
+	}
+}
