@@ -59,7 +59,7 @@ require([
 
   // https://arcgis.glatest.org.uk/arcgis/rest/services/TEST/Workspaces_service_editable_edits_service_01/MapServer
 
-  var service_dir = "https://arcgis.glatest.org.uk/arcgis/rest/services/TEST/"
+  var service_dir = "https://maps.glatest.org.uk/arcgis/rest/services/TEST/"
   // var service_dir = "https://maps.london.gov.uk/gla/rest/services/apps/"
   var mapservice = is_admin
     ? service_dir + "Workspaces_service_editable_service_01/FeatureServer/0"
