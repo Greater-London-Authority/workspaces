@@ -57,8 +57,8 @@ require([
 ) {
   /******* Initialise Variables *******/
 
-  // var service_dir = "https://maps.glatest.org.uk/arcgis/rest/services/TEST/"
-  var service_dir = "https://maps.london.gov.uk/gla/rest/services/apps/"
+  var service_dir = "https://maps.glatest.org.uk/arcgis/rest/services/TEST/"
+  // var service_dir = "https://maps.london.gov.uk/gla/rest/services/apps/"
   var mapservice = is_admin
     ? service_dir + "Workspaces_service_editable_service_01/FeatureServer/0"
     : service_dir +
