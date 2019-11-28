@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-
-  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <meta content="initial-scale=1, maximum-scale=1,user-scalable=no" name="viewport">
-  <title>London Workspaces</title>
-
-  <link rel="shortcut icon" href="//www.london.gov.uk/sites/all/themes/gla/images/favicons/favicon.ico">
-  <link rel="manifest" href="//www.london.gov.uk/sites/all/themes/gla/images/favicons/manifest.json">
-
-  <link rel="stylesheet"href="css/sweetalert.css">
-
-  <link rel="stylesheet" href="https://js.arcgis.com/3.30/esri/css/esri.css">
-  <link href="css/jquery-ui.min.css" rel="stylesheet">
-  <link href="css/jquery-ui.theme.min.css" rel="stylesheet">
-
-  <link href="css/styles3.css" rel="stylesheet">
-  <link href="css/mobile.css" rel="stylesheet">
-
-  <script>
-  var is_admin = location.pathname.indexOf("admin")!=-1;
-  var dojoConfig = {
-    paths: {
-      extras: location.pathname.replace(/\/[^/]+$/, '').replace("admin/","")
-    }
-  };
-  var isLteIE8 = false;
-  function getCookieValue(a, b) {
-    b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
-    return b ? b.pop() : '';
-  }
-  var skip_login = getCookieValue("signed_in")==1;
-  </script>
-  <!--[if lte IE 8]>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="initial-scale=1, maximum-scale=1,user-scalable=no" name="viewport">
+    <title>London Workspaces</title>
+    <link rel="shortcut icon" href="//www.london.gov.uk/sites/all/themes/gla/images/favicons/favicon.ico">
+    <link rel="manifest" href="//www.london.gov.uk/sites/all/themes/gla/images/favicons/manifest.json">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.30/esri/css/esri.css">
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/jquery-ui.theme.min.css" rel="stylesheet">
+    <link href="css/styles3.css" rel="stylesheet">
+    <link href="css/mobile.css" rel="stylesheet">
+    <script>
+      var is_admin = location.pathname.indexOf("admin") != -1;
+      var dojoConfig = {
+        paths: {
+          extras: location.pathname.replace(/\/[^/]+$/, '').replace("admin/", "")
+        }
+      };
+      var isLteIE8 = false;
+      function getCookieValue(a, b) {
+        b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+        return b ? b.pop() : '';
+      }
+      var skip_login = getCookieValue("signed_in") == 1;
+    </script>
+    <!--[if lte IE 8]>
   <style>
   #panel, #thumb {
   border:1px solid #888;
@@ -43,306 +37,416 @@ alert('London Open Workspaces :: This is a very old browser, which is no longer 
 location.href = 'https://www.microsoft.com/en-gb/download/internet-explorer.aspx';
 </script>
 <![endif]-->
-
-<script src="js/sweetalert.min.js"></script>
-
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-
-<script src="https://js.arcgis.com/3.30/"></script>
-
-</head>
-
-<body class="tundra">
-
-  <script>
-  if (is_admin) { //Do early as possible, so there's no flicker of login screen
-    var c = "tundra admin";
-    if (!skip_login) c += " login";
-    document.body.className = c;
-  }
-  </script>
-
-  <div id="mylogin" style="position:absolute;z-index:1000;top: 100px;left:0;width:100%;">
-    <div style="text-align:center;position:relative;border-radius:10px;margin:0 auto;width: 300px;background:white;padding:20px;border:1px solid #555">
-      <img src="images/logo2.png">
-      <div class="content">
-        <form onsubmit="credentials.attempt();return false" style="margin-top:20px">
-          <input id="uname" type="text" placeholder="Username">
-          <input id="pwd" type="password" placeholder="Password" style="margin-top:10px">
-          <input type="submit" style="display:none">
-          <script>$("#uname").focus();</script>
-        </form>
-        <div style="margin-top:20px">
-          <div onclick="credentials.attempt()" class="button">Login</div>
-          <div onclick="location.href=location.href.replace('admin/','')" class="button silent" style="">Or View Public Version</div>
-        </div>
-      </div>
-      <div class="loader" style="margin:22px 0 17px"><div></div></div>
-    </div>
-  </div>
-
-  <div id="big_add" onclick="workspace.toggle()" class="button" style="display:none">
-    Add Workspace
-  </div>
-
-  <div id="mapDiv">
-
-    <div id="back_to_map" style="position:absolute;left:0;overflow-y:auto;width:100%;top:0;height:100%;background:white;z-index:99">
-      <div onclick="go_back_to_map()" class="noselect back_panel blue">
-        Back to Map
-        <img src="images/left@2x.png" style="left:30px">
-      </div>
-      <div style="padding:20px 15px 15px;position:relative;">
-        <div id="title" style="font-size:23px;font-weight:bold;margin-bottom:15px">
-
-        </div>
-        <div id="content">
-          Test message
-        </div>
-      </div>
-    </div>
-
-    <div style="position:relative">
-
-      <div id="menu_button" onclick="minimise(false)"><div></div></div>
-
-      <div id="thumbdrop" style="display:none;position:absolute;top:0;left:0;z-index:10;pointer-events:none">
-        <div style="position:relative;padding: 8px;border-radius:4px;box-shadow:0 0 3px black;border:1px solid #9e0059;background:white;">
-          <img src="images/pins/red.png" style="position:absolute;left: 5px;top: 4px;">
-          <div class="text" style="padding-left: 18px;font-size:13px;font-weight:bold;">
-            <div>Click to drop pin</div>
-            <div>Click to move pin</div>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="https://js.arcgis.com/3.30/"></script>
+  </head>
+  <body class="tundra">
+    <script>
+      if (is_admin) {
+        //Do early as possible, so there's no flicker of login screen
+        var c = "tundra admin";
+        if (!skip_login)
+          c += " login";
+        document.body.className = c;
+      }
+    </script>
+    <div id="mylogin" style="position:absolute;z-index:1000;top: 100px;left:0;width:100%;">
+      <div style="text-align:center;position:relative;border-radius:10px;margin:0 auto;width: 300px;background:white;padding:20px;border:1px solid #555">
+        <img src="images/logo2.png">
+        <div class="content">
+          <form onsubmit="credentials.attempt();return false" style="margin-top:20px">
+            <input id="uname" type="text" placeholder="Username">
+            <input id="pwd" type="password" placeholder="Password" style="margin-top:10px">
+            <input type="submit" style="display:none">
+            <script>
+              $("#uname").focus();
+            </script>
+          </form>
+          <div style="margin-top:20px">
+            <div onclick="credentials.attempt()" class="button">Login</div>
+            <div onclick="location.href=location.href.replace('admin/','')" class="button silent" style="">Or View Public Version</div>
           </div>
         </div>
+        <div class="loader" style="margin:22px 0 17px">
+          <div></div>
+        </div>
       </div>
-
-      <div id="backpage" style="position:absolute;top:0;left:0;width:100%;z-index:30;box-shadow:0 -1px 6px black" onclick="workspace.minimise(false)" class="noselect back_panel">
-        Back to Filters
+    </div>
+    <div id="big_add" onclick="workspace.toggle()" class="button" style="display:none">Add Workspace
+  </div>
+    <div id="mapDiv">
+      <div id="back_to_map" style="position:absolute;left:0;overflow-y:auto;width:100%;top:0;height:100%;background:white;z-index:99">
+        <div onclick="go_back_to_map()" class="noselect back_panel blue">
+          Back to Map
+        <img src="images/left@2x.png" style="left:30px">
+        </div>
+        <div style="padding:20px 15px 15px;position:relative;">
+          <div id="title" style="font-size:23px;font-weight:bold;margin-bottom:15px"></div>
+          <div id="content">Test message
+        </div>
+        </div>
+      </div>
+      <div style="position:relative">
+        <div id="menu_button" onclick="minimise(false)">
+          <div></div>
+        </div>
+        <div id="thumbdrop" style="display:none;position:absolute;top:0;left:0;z-index:10;pointer-events:none">
+          <div style="position:relative;padding: 8px;border-radius:4px;box-shadow:0 0 3px black;border:1px solid #9e0059;background:white;">
+            <img src="images/pins/red.png" style="position:absolute;left: 5px;top: 4px;">
+            <div class="text" style="padding-left: 18px;font-size:13px;font-weight:bold;">
+              <div>Click to drop pin</div>
+              <div>Click to move pin</div>
+            </div>
+          </div>
+        </div>
+        <div id="backpage" style="position:absolute;top:0;left:0;width:100%;z-index:30;box-shadow:0 -1px 6px black" onclick="workspace.minimise(false)" class="noselect back_panel">
+          Back to Filters
         <img src="images/left@2x.png">
-      </div>
-      <div id="panel" style="font-family:Arial;position:absolute;left:20px;top:20px;width:331px;background:#353d42;z-index:35;border-radius:4px;box-shadow:0 0 6px #666">
-        <div id="header">
-          <div id="mayor_holder" style="text-align:center">
-            <div id="minimise" onclick="minimise()"></div>
-            <div style="text-align:center;height:14px;">
-              <a id="mayor_logo" href="https://lep.london/" target="_top" style="margin-top:-2px;display:inline-block;text-decoration:none;">
-                <img src="images/growthhub.png" style="width:228px;height:18px">
+        </div>
+        <div id="panel" style="font-family:Arial;position:absolute;left:20px;top:20px;width:331px;background:#353d42;z-index:35;border-radius:4px;box-shadow:0 0 6px #666">
+          <div id="header">
+            <div id="mayor_holder" style="text-align:center">
+              <div id="minimise" onclick="minimise()"></div>
+              <div style="text-align:center;height:14px;">
+                <a id="mayor_logo" href="https://lep.london/" target="_top" style="margin-top:-2px;display:inline-block;text-decoration:none;">
+                  <img src="images/growthhub.png" style="width:228px;height:18px">
+                </a>
+              </div>
+              <div style="display:none">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="140px" viewBox="0 0 286.146 81.368">
+                  <g>
+                    <g>
+                      <path d="M0 45.615V1.134h8.379v36.92H26.02v7.561H0z"></path>
+                      <path d="M55.693 0c13.546 0 21.3 11.1 21.3 23.123c0 10.081-5.481 23.626-21.484 23.6 c-13.104 0-21.169-10.837-21.169-23.312C34.335 10.4 42.8 0 55.7 0z M55.756 39c6.615 0 12.853-5.104 12.853-15.184 c0-7.938-4.158-16.192-12.979-16.192c-7.309 0-12.727 5.733-12.727 15.499C42.904 30.1 46.2 39 55.8 39z"></path>
+                      <path d="M118.379 45.615L98.911 14.428c0 0 0.5 30.4 0.5 31.187h-8.127V1.134h7.497l19.72 31.4 c0 0-0.945-30.368-1.008-31.375h8.19v44.48H118.379z"></path>
+                      <path d="M161.406 1.134c10.522 0 20.4 6.7 20.4 22.618c0 14.239-7.749 21.862-20.854 21.862h-16.821V1.134 H161.406z M152.397 38.117h5.166c9.64 0 15.373-1.827 15.373-14.365c0-10.962-5.419-15.121-13.672-15.121h-6.867V38.117z"></path>
+                      <path d="M216.153 0c13.545 0 21.3 11.1 21.3 23.123c0 10.081-5.481 23.626-21.484 23.6 c-13.104 0-21.169-10.837-21.169-23.312C194.794 10.4 203.3 0 216.2 0z M216.215 39c6.615 0 12.853-5.104 12.853-15.184 c0-7.938-4.158-16.192-12.979-16.192c-7.309 0-12.727 5.733-12.727 15.499C203.363 30.1 206.7 39 216.2 39z"></path>
+                      <path d="M278.837 45.615L259.37 14.428c0 0 0.5 30.4 0.5 31.187h-8.128V1.134h7.498l19.72 31.4 c0 0-0.945-30.368-1.008-31.375h8.19v44.48H278.837z"></path>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M0.167 80.96V64.93h11.398v2.679H3.119v3.769h7.742v2.588H3.119v4.292h9.014v2.701H0.167z"></path>
+                      <path d="M29.634 80.96l-7.016-11.239c0 0 0.2 10.9 0.2 11.239h-2.929V64.93h2.702l7.106 11.3 c0 0-0.341-10.944-0.363-11.307h2.952v16.03H29.634z"></path>
+                      <path d="M46.408 67.632V80.96h-2.997V67.632h-4.359V64.93h11.784v2.702H46.408z"></path>
+                      <path d="M57.553 80.96V64.93h11.398v2.679h-8.446v3.769h7.743v2.588h-7.743v4.292h9.014v2.701H57.553z"></path>
+                      <path d="M83.795 64.93c3.156 0 5.3 2.1 5.3 5.086c0 1.544-0.613 3.564-3.156 4.405l3.565 6.539h-3.429 l-3.156-5.949h-2.702v5.949h-2.974V64.93H83.795z M80.208 72.514h2.316c2.157 0 3.52-0.636 3.52-2.52 c0-1.726-1.181-2.475-3.111-2.475h-2.725V72.514z"></path>
+                      <path d="M103.566 64.93c3.315 0 5.7 2 5.7 5.336c0 2.906-1.681 5.245-5.858 5.245h-3.065v5.449h-2.997V64.93 H103.566z M100.342 73.059h2.634c2.134 0 3.202-0.999 3.202-2.883c0-2.589-2.089-2.68-3.542-2.68h-2.293V73.059z"></path>
+                      <path d="M123.021 64.93c3.156 0 5.3 2.1 5.3 5.086c0 1.544-0.613 3.564-3.156 4.405l3.565 6.539h-3.429 l-3.156-5.949h-2.702v5.949h-2.974V64.93H123.021z M119.433 72.514h2.316c2.157 0 3.52-0.636 3.52-2.52 c0-1.726-1.181-2.475-3.111-2.475h-2.725V72.514z"></path>
+                      <path d="M136.525 80.96V64.93h2.951v16.03H136.525z"></path>
+                      <path d="M158.477 69.607c-0.499-0.817-1.657-2.384-4.178-2.384c-0.681 0-2.997 0.25-2.997 2 c0 1.2 1.2 1.5 2.9 1.907l1.681 0.363c2.52 0.5 5.2 1.5 5.2 4.746c0 3.973-3.951 5.176-6.812 5.2 c-2.679 0-5.585-0.953-7.016-3.428l2.521-1.748c0.703 1 2 2.4 5 2.406c1.749 0 3.088-0.727 3.088-2.111 c0-1.317-1.067-1.612-3.088-2.066l-2.043-0.454c-2.044-0.454-4.587-1.317-4.587-4.45c0-2.838 2.293-4.995 6.335-4.995 c1.431 0 4.2 0.2 6.5 3.247L158.477 69.607z"></path>
+                      <path d="M169.099 80.96V64.93h11.397v2.679h-8.446v3.769h7.742v2.588h-7.742v4.292h9.014v2.701H169.099z"></path>
+                      <path d="M205.079 64.93c3.315 0 5.7 2 5.7 5.336c0 2.906-1.681 5.245-5.858 5.245h-3.064v5.449h-2.998V64.93 H205.079z M201.855 73.059h2.633c2.135 0 3.202-0.999 3.202-2.883c0-2.589-2.089-2.68-3.542-2.68h-2.293V73.059z"></path>
+                      <path d="M225.488 80.96l-0.932-3.133h-6.017l-0.931 3.133h-3.225l5.427-16.03h3.406l5.472 16.03H225.488z M221.56 67.814l-2.226 7.379h4.428L221.56 67.814z"></path>
+                      <path d="M245.009 80.96l-7.016-11.239c0 0 0.2 10.9 0.2 11.239h-2.93V64.93h2.702l7.106 11.3 c0 0-0.34-10.944-0.363-11.307h2.952v16.03H245.009z"></path>
+                      <path d="M256.652 80.96V64.93h11.397v2.679h-8.446v3.769h7.742v2.588h-7.742v4.292h9.014v2.701H256.652z"></path>
+                      <path d="M276.355 80.96V64.93h3.021v13.305h6.357v2.725H276.355z"></path>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div style="border-bottom:1px solid #d5d5d5;height:25px;padding:16px 0 15px;background:#e3e3e3;text-align:center">
+              <a id="main_logo" href="." style="text-decoration:none;color:black">
+                <img src="images/logo2@2x.png" style="width:299px;height:25px;">
               </a>
             </div>
-            <div style="display:none">
-              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="140px" viewBox="0 0 286.146 81.368">
-                <g><g><path d="M0 45.615V1.134h8.379v36.92H26.02v7.561H0z"></path><path d="M55.693 0c13.546 0 21.3 11.1 21.3 23.123c0 10.081-5.481 23.626-21.484 23.6 c-13.104 0-21.169-10.837-21.169-23.312C34.335 10.4 42.8 0 55.7 0z M55.756 39c6.615 0 12.853-5.104 12.853-15.184 c0-7.938-4.158-16.192-12.979-16.192c-7.309 0-12.727 5.733-12.727 15.499C42.904 30.1 46.2 39 55.8 39z"></path><path d="M118.379 45.615L98.911 14.428c0 0 0.5 30.4 0.5 31.187h-8.127V1.134h7.497l19.72 31.4 c0 0-0.945-30.368-1.008-31.375h8.19v44.48H118.379z"></path><path d="M161.406 1.134c10.522 0 20.4 6.7 20.4 22.618c0 14.239-7.749 21.862-20.854 21.862h-16.821V1.134 H161.406z M152.397 38.117h5.166c9.64 0 15.373-1.827 15.373-14.365c0-10.962-5.419-15.121-13.672-15.121h-6.867V38.117z"></path><path d="M216.153 0c13.545 0 21.3 11.1 21.3 23.123c0 10.081-5.481 23.626-21.484 23.6 c-13.104 0-21.169-10.837-21.169-23.312C194.794 10.4 203.3 0 216.2 0z M216.215 39c6.615 0 12.853-5.104 12.853-15.184 c0-7.938-4.158-16.192-12.979-16.192c-7.309 0-12.727 5.733-12.727 15.499C203.363 30.1 206.7 39 216.2 39z"></path><path d="M278.837 45.615L259.37 14.428c0 0 0.5 30.4 0.5 31.187h-8.128V1.134h7.498l19.72 31.4 c0 0-0.945-30.368-1.008-31.375h8.19v44.48H278.837z"></path></g></g><g><g><path d="M0.167 80.96V64.93h11.398v2.679H3.119v3.769h7.742v2.588H3.119v4.292h9.014v2.701H0.167z"></path><path d="M29.634 80.96l-7.016-11.239c0 0 0.2 10.9 0.2 11.239h-2.929V64.93h2.702l7.106 11.3 c0 0-0.341-10.944-0.363-11.307h2.952v16.03H29.634z"></path><path d="M46.408 67.632V80.96h-2.997V67.632h-4.359V64.93h11.784v2.702H46.408z"></path><path d="M57.553 80.96V64.93h11.398v2.679h-8.446v3.769h7.743v2.588h-7.743v4.292h9.014v2.701H57.553z"></path><path d="M83.795 64.93c3.156 0 5.3 2.1 5.3 5.086c0 1.544-0.613 3.564-3.156 4.405l3.565 6.539h-3.429 l-3.156-5.949h-2.702v5.949h-2.974V64.93H83.795z M80.208 72.514h2.316c2.157 0 3.52-0.636 3.52-2.52 c0-1.726-1.181-2.475-3.111-2.475h-2.725V72.514z"></path><path d="M103.566 64.93c3.315 0 5.7 2 5.7 5.336c0 2.906-1.681 5.245-5.858 5.245h-3.065v5.449h-2.997V64.93 H103.566z M100.342 73.059h2.634c2.134 0 3.202-0.999 3.202-2.883c0-2.589-2.089-2.68-3.542-2.68h-2.293V73.059z"></path><path d="M123.021 64.93c3.156 0 5.3 2.1 5.3 5.086c0 1.544-0.613 3.564-3.156 4.405l3.565 6.539h-3.429 l-3.156-5.949h-2.702v5.949h-2.974V64.93H123.021z M119.433 72.514h2.316c2.157 0 3.52-0.636 3.52-2.52 c0-1.726-1.181-2.475-3.111-2.475h-2.725V72.514z"></path><path d="M136.525 80.96V64.93h2.951v16.03H136.525z"></path><path d="M158.477 69.607c-0.499-0.817-1.657-2.384-4.178-2.384c-0.681 0-2.997 0.25-2.997 2 c0 1.2 1.2 1.5 2.9 1.907l1.681 0.363c2.52 0.5 5.2 1.5 5.2 4.746c0 3.973-3.951 5.176-6.812 5.2 c-2.679 0-5.585-0.953-7.016-3.428l2.521-1.748c0.703 1 2 2.4 5 2.406c1.749 0 3.088-0.727 3.088-2.111 c0-1.317-1.067-1.612-3.088-2.066l-2.043-0.454c-2.044-0.454-4.587-1.317-4.587-4.45c0-2.838 2.293-4.995 6.335-4.995 c1.431 0 4.2 0.2 6.5 3.247L158.477 69.607z"></path><path d="M169.099 80.96V64.93h11.397v2.679h-8.446v3.769h7.742v2.588h-7.742v4.292h9.014v2.701H169.099z"></path><path d="M205.079 64.93c3.315 0 5.7 2 5.7 5.336c0 2.906-1.681 5.245-5.858 5.245h-3.064v5.449h-2.998V64.93 H205.079z M201.855 73.059h2.633c2.135 0 3.202-0.999 3.202-2.883c0-2.589-2.089-2.68-3.542-2.68h-2.293V73.059z"></path><path d="M225.488 80.96l-0.932-3.133h-6.017l-0.931 3.133h-3.225l5.427-16.03h3.406l5.472 16.03H225.488z M221.56 67.814l-2.226 7.379h4.428L221.56 67.814z"></path><path d="M245.009 80.96l-7.016-11.239c0 0 0.2 10.9 0.2 11.239h-2.93V64.93h2.702l7.106 11.3 c0 0-0.34-10.944-0.363-11.307h2.952v16.03H245.009z"></path><path d="M256.652 80.96V64.93h11.397v2.679h-8.446v3.769h7.742v2.588h-7.742v4.292h9.014v2.701H256.652z"></path><path d="M276.355 80.96V64.93h3.021v13.305h6.357v2.725H276.355z"></path></g></g>
-              </svg>
+          </div>
+          <div id="inner">
+            <div class="loader">
+              <div></div>
             </div>
-          </div>
-          <div style="border-bottom:1px solid #d5d5d5;height:25px;padding:16px 0 15px;background:#e3e3e3;text-align:center">
-            <a id="main_logo" href="." style="text-decoration:none;color:black">
-              <img src="images/logo2@2x.png" style="width:299px;height:25px;">
-            </a>
-          </div>
-        </div>
-        <div id="inner">
-          <div class="loader"><div></div></div>
-          <div id="search" style="background:url(images/dummy_locator.jpg) no-repeat">
-            <div id="LocateButton"></div>
-          </div>
-          <div id="content">
-            <div id="new_point">
-              <div id="data_prompt">
-                Enter Your Workspace Details
-              </div>
-              <div id="edit_prompt">
-                Verify Edits on <span></span>: <div class="help" onclick="help_verify_edits()" style="float:right;margin-top:3px"></div>
-              </div>
-              <div id="fields">
-
-              </div>
+            <div id="search" style="background:url(images/dummy_locator.jpg) no-repeat">
+              <div id="LocateButton"></div>
             </div>
-            <div id="filters">
-              <div id="type_options" style="visibility:hidden">
-                <input type="radio" id="radio6" name="workspace_type" value="Others" checked="checked"><label for="radio6">Live Data</label>
-                <input type="radio" class="admin" id="radio3" name="workspace_type" value="New"><label class="admin" for="radio3">New <span id="new_count"><img src="images/loading.gif" style="vertical-align:middle;width:12px"></span></label>
+            <div id="content">
+              <div id="new_point">
+                <div id="data_prompt">Enter Your Workspace Details
               </div>
-              <div id="bonus_filter_holder" style="display:none;font-size:14px;padding-top:2px;">
-                <div>
-                  <div class="subtitle" style="margin-top:0">
-                    <div></div> <span>WORKSPACE TYPE</span></span>
-                  </div>
-                  <div id="workspace_types" style="overflow:hidden">
-                    <label><input type='checkbox' value="Co-working"> <span>Co-working</span></label>
-                    <label><input type='checkbox' value="Artist studios"> <span>Artists</span></label>
-                    <label><input type='checkbox' value="Incubator"> <span>Incubators</span></label>
-                    <label><input type='checkbox' value="Makerspace"> <span>Makers</span></label>
-                    <label><input type='checkbox' value="Accelerator"> <span>Accelerators</span></label>
-                    <label><input type='checkbox' value="Kitchen"> <span>Kitchens</span></label>
-                  </div>
+                <div id="edit_prompt">
+                  Verify Edits on <span></span>
+                  : <div class="help" onclick="help_verify_edits()" style="float:right;margin-top:3px"></div>
                 </div>
-                <div class="subtitle">
-                  <div></div> <span>SERVICES PROVIDED</span>
-                  <div id="select_all" onclick="services.select_all.go()" style="display:none;margin:0 0 -4px 3px"></div>
-                </div>
-                <div id="services" style="overflow:hidden">
-                  <div id="Office_services" class="cat"></div>
-                  <div id="Artist_services" class="cat"></div>
-                  <div id="Maker_services" class="cat"></div>
-                </div>
-                <div style="display:none">
-                  <div class="subtitle">
-                    <div></div> <span>SECTORS CATERED FOR</span>
-                  </div>
-                  <div id="sectors">
-
-                  </div>
-                </div>
-                <div id="desk_price">
-                  <div class="subtitle">
-                    <div></div> <span>DESK PRICE: </span><span id="price_text">All Prices</span>
-                  </div>
-                  <div id="price_slider"></div>
-                </div>
-                <div id="space_price">
-                  <div class="subtitle">
-                    <div></div> <span>SPACE PRICE: </span><span id="price_text2">All Prices</span>
-                  </div>
-                  <div id="price_slider2"></div>
-                </div>
+                <div id="fields"></div>
               </div>
-              <div id="edit_index">
-                <div id="new_points_subtitle" class="subtitle" style="display:none">
-                  New Workspaces to Verify:
+              <div id="filters">
+                <div id="type_options" style="visibility:hidden">
+                  <input type="radio" id="radio6" name="workspace_type" value="Others" checked="checked">
+                  <label for="radio6">Live Data</label>
+                  <input type="radio" class="admin" id="radio3" name="workspace_type" value="New">
+                  <label class="admin" for="radio3">
+                    New 
+                                        
+                                        
+                    <span id="new_count">
+                      <img src="images/loading.gif" style="vertical-align:middle;width:12px">
+                    </span>
+                  </label>
                 </div>
-                <div id="new_points"></div>
-                <div id="no_points_warning" style="text-align:center;color:#999;font-size:14px;padding-top:30px;padding-bottom:12px">
-                  --- There are no more new workspaces ---
-                </div>
-                <div id="edited_points_subtitle" class="subtitle" style="display:none">
-                  Edited Workspaces to Verify:
-                </div>
-                <div id="edited_points">
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="expand_map_button" class="big_button" onclick="workspace.minimise()">
-            <img src="images/view_map@2x.png" alt="View Map">
-          </div>
-          <div id="cancel_add_holder">
-            <div style="margin-bottom:15px">Click the map to add a Workspace, or</div>
-            <div onclick="workspace.toggle()" class="button" style="display:inline-block;float:none;width:130px;">Cancel</div>
-          </div>
-          <div id="buttons">
-            <div class="new">
-              <div onclick="workspace.save()" class="button">Submit</div>
-              <div onclick="workspace.toggle()" class="button silent">Cancel</div>
-            </div>
-            <div class="new_verify">
-              <div id="verify_button" onclick="workspace.verify.go()" class="button">Verify</div>
-              <div id="delete_button" onclick="workspace.remove_prompt()" class="button warning">Delete</div>
-              <div onclick="workspace.toggle()" class="button silent">Cancel</div>
-            </div>
-            <div class="editing">
-              <div onclick="workspace.verify.edits()" class="button">Verify</div>
-              <div onclick="workspace.toggle()" class="button silent">Cancel</div>
-            </div>
-          </div>
-        </div>
-        <div id="footer" style="position:relative;padding:10px;color:white;font-weight:bold;font-size:14px;border-radius:0 0 4px 4px">
-
-          <div id="standard">
-            <var onclick="about_map()">About</var> <span>|</span> <var onclick="disclaimer()">Disclaimer</var>
-            <span id='logout_holder'><span>|</span> <var onclick="workspace.logout()">Logout</var></span>
-
-            <!-- 						<span id='cancel_holder'><span>|</span> <var onclick="workspace.toggle()">Add Workspace</var></span> -->
-
-            <span id='clear_holder'><span>|</span> <var onclick="clear_filters()">Clear All</var></span>
-          </div>
-
-          <div id="share">
-            <div id="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A//maps.london.gov.uk/workspaces/','name','width=600,height=400');" title="Share on Facebook"></div>
-            <div id="twitter" onclick="window.open('https://twitter.com/home?status=London%20Open%20Workspaces%3A%20https%3A//maps.london.gov.uk/workspaces/','name','width=600,height=400');" title="Share on Twitter"></div>
-            <a id="email" href="mailto:?subject=London Open Workspaces&body=https://maps.london.gov.uk/workspaces/" title="Share via Email"></a>
-          </div>
-        </div>
-      </div>
-
-      <div id="thumb" onmouseover="show_thumb(false)"></div>
-
-    </div>
-
-    <div style="display:none">
-      <div id="contact_form">
-        <div id="fields" style="width:220px;margin:0 auto">
-          <div><span>Your Name</span><input type="text"><div class="prompter"></div></div>
-          <div><span>Your Email</span><input type="text"><div class="prompter"></div></div>
-          <div><span>Contact Number</span><input type="text"><div class="prompter"></div></div>
-          <div><span>Affiliation</span><select><option>Workspace Representative</option><option>Workspace User</option></select><div class="prompter"></div></div>
-        </div>
-      </div>
-      <div id="popup_content_template">
-        <div class="ADDRESS_holder">
-          <b>$ADDRESS$ <span class='POSTCODE_holder'>$POSTCODE$</span></b>
-        </div>
-        <div class="contact">
-          <div class='icon_holder EMAIL_holder'>
-            <span><img src="https://maps.london.gov.uk/schools/images/at.png" style="width:22px"></span>
-            <a href="mailto:$EMAIL$" target="_blank">Email</a>
-          </div>
-          <div class='icon_holder WEBSITE_holder'>
-            <span><img src="https://maps.london.gov.uk/schools/images/link.png" style="width:15px"></span>
-            <a href="$WEBSITE$" target="_blank">Website</a>
-          </div>
-          <div class='icon_holder PHONE_holder'>
-            <span style="margin-left:-10px"><img src="https://maps.london.gov.uk/schools/images/phone@2x.png" style="width:19px;margin-right:-5px"></span>
-            <span>$PHONE$</span>
-          </div>
-        </div>
-        <div class="standard_fields">
-          <div class="TYPE_holder">
-            <em>Site Type:</em> $TYPE$
-          </div>
-          <div class="YEAR_holder">
-            <em>Established:</em> $YEAR$
-          </div>
-          <div class="DESKS_holder">
-            <em>Number of $DESKTYPE$:</em> $DESKS$
-          </div>
-          <div class="COST_holder">
-            <em>Cost:</em> $COST$
-          </div>
-          <div class="FOOTAGE_holder">
-            <em>Cost:</em> $FOOTAGE$
-          </div>
-          <div style="display:none" class="SECTORS_holder">
-            <em>Sectors catered for:</em> $SECTORS$
-          </div>
-        </div>
-        <div class="SERVICES_holder" style="margin: 19px 0 -1px;overflow:hidden">
-          $SERVICES$
-        </div>
-        <div id="share" style="left:3px;bottom:2px;right:auto;top:auto">
-          <a id="facebook" href="$FACEBOOK$" target="_blank" class="FACEBOOK_holder"></a>
-          <a id="twitter" href="$TWITTER$" target="_blank" class="TWITTER_holder"></a>
-        </div>
-      </div>
-    </div>
-
+                <div id="bonus_filter_holder" style="display:none;font-size:14px;padding-top:2px;">
+                  <div>
+                    <div class="subtitle" style="margin-top:0">
+                      <div></div>
+                      <span>WORKSPACE TYPE</span>
+</span></div>
+<div id="workspace_types" style="overflow:hidden">
+  <label>
+    <input type='checkbox' value="Co-working">
+    <span>Co-working</span>
+  </label>
+  <label>
+    <input type='checkbox' value="Artist studios">
+    <span>Artists</span>
+  </label>
+  <label>
+    <input type='checkbox' value="Incubator">
+    <span>Incubators</span>
+  </label>
+  <label>
+    <input type='checkbox' value="Makerspace">
+    <span>Makers</span>
+  </label>
+  <label>
+    <input type='checkbox' value="Accelerator">
+    <span>Accelerators</span>
+  </label>
+  <label>
+    <input type='checkbox' value="Kitchen">
+    <span>Kitchens</span>
+  </label>
+</div>
+</div>
+<div class="subtitle">
+  <div></div>
+  <span>SERVICES PROVIDED</span>
+  <div id="select_all" onclick="services.select_all.go()" style="display:none;margin:0 0 -4px 3px"></div>
+</div>
+<div id="services" style="overflow:hidden">
+  <div id="Office_services" class="cat"></div>
+  <div id="Artist_services" class="cat"></div>
+  <div id="Maker_services" class="cat"></div>
+</div>
+<div style="display:none">
+  <div class="subtitle">
+    <div></div>
+    <span>SECTORS CATERED FOR</span>
   </div>
-  <script src="./js/common.js"></script>
-  <script src="js/map3.js?release=20171004"></script>
-  <script type="text/javascript">
+  <div id="sectors"></div>
+</div>
+<div id="desk_price">
+  <div class="subtitle">
+    <div></div>
+    <span>DESK PRICE: </span>
+    <span id="price_text">All Prices</span>
+  </div>
+  <div id="price_slider"></div>
+</div>
+<div id="space_price">
+  <div class="subtitle">
+    <div></div>
+    <span>SPACE PRICE: </span>
+    <span id="price_text2">All Prices</span>
+  </div>
+  <div id="price_slider2"></div>
+</div>
+</div>
+<div id="edit_index">
+  <div id="new_points_subtitle" class="subtitle" style="display:none">New Workspaces to Verify:
+                </div>
+  <div id="new_points"></div>
+  <div id="no_points_warning" style="text-align:center;color:#999;font-size:14px;padding-top:30px;padding-bottom:12px">--- There are no more new workspaces ---
+                </div>
+  <div id="edited_points_subtitle" class="subtitle" style="display:none">Edited Workspaces to Verify:
+                </div>
+  <div id="edited_points"></div>
+</div>
+</div></div>
+<div id="expand_map_button" class="big_button" onclick="workspace.minimise()">
+  <img src="images/view_map@2x.png" alt="View Map">
+</div>
+<div id="cancel_add_holder">
+  <div style="margin-bottom:15px">Click the map to add a Workspace, or</div>
+  <div onclick="workspace.toggle()" class="button" style="display:inline-block;float:none;width:130px;">Cancel</div>
+</div>
+<div id="buttons">
+  <div class="new">
+    <div onclick="workspace.save()" class="button">Submit</div>
+    <div onclick="workspace.toggle()" class="button silent">Cancel</div>
+  </div>
+  <div class="new_verify">
+    <div id="verify_button" onclick="workspace.verify.go()" class="button">Verify</div>
+    <div id="delete_button" onclick="workspace.remove_prompt()" class="button warning">Delete</div>
+    <div onclick="workspace.toggle()" class="button silent">Cancel</div>
+  </div>
+  <div class="editing">
+    <div onclick="workspace.verify.edits()" class="button">Verify</div>
+    <div onclick="workspace.toggle()" class="button silent">Cancel</div>
+  </div>
+</div>
+</div>
+<div id="footer" style="position:relative;padding:10px;color:white;font-weight:bold;font-size:14px;border-radius:0 0 4px 4px">
+  <div id="standard">
+    <var onclick="about_map()">About</var>
+    <span>|</span>
+    <var onclick="disclaimer()">Disclaimer</var>
+    <span id='logout_holder'>
+      <span>|</span>
+      <var onclick="workspace.logout()">Logout</var>
+    </span>
+    <!-- 						<span id='cancel_holder'><span>|</span> <var onclick="workspace.toggle()">Add Workspace</var></span> -->
+    <span id='clear_holder'>
+      <span>|</span>
+      <var onclick="clear_filters()">Clear All</var>
+    </span>
+  </div>
+  <div id="share">
+    <div id="facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A//maps.london.gov.uk/workspaces/','name','width=600,height=400');" title="Share on Facebook"></div>
+    <div id="twitter" onclick="window.open('https://twitter.com/home?status=London%20Open%20Workspaces%3A%20https%3A//maps.london.gov.uk/workspaces/','name','width=600,height=400');" title="Share on Twitter"></div>
+    <a id="email" href="mailto:?subject=London Open Workspaces&body=https://maps.london.gov.uk/workspaces/" title="Share via Email"></a>
+  </div>
+</div>
+</div><div id="thumb" onmouseover="show_thumb(false)"></div>
+</div>
+<div style="display:none">
+  <div id="contact_form">
+    <div id="fields" style="width:220px;margin:0 auto">
+      <div>
+        <span>Your Name</span>
+        <input type="text">
+        <div class="prompter"></div>
+      </div>
+      <div>
+        <span>Your Email</span>
+        <input type="text">
+        <div class="prompter"></div>
+      </div>
+      <div>
+        <span>Contact Number</span>
+        <input type="text">
+        <div class="prompter"></div>
+      </div>
+      <div>
+        <span>Affiliation</span>
+        <select>
+          <option>Workspace Representative</option>
+          <option>Workspace User</option>
+        </select>
+        <div class="prompter"></div>
+      </div>
+    </div>
+  </div>
+  <div id="popup_content_template">
+    <div class="ADDRESS_holder">
+      <b>
+        $ADDRESS$ <span class='POSTCODE_holder'>$POSTCODE$</span>
+      </b>
+    </div>
+    <div class="contact">
+      <div class='icon_holder EMAIL_holder'>
+        <span>
+          <img src="https://maps.london.gov.uk/schools/images/at.png" style="width:22px">
+        </span>
+        <a href="mailto:$EMAIL$" target="_blank">Email</a>
+      </div>
+      <div class='icon_holder WEBSITE_holder'>
+        <span>
+          <img src="https://maps.london.gov.uk/schools/images/link.png" style="width:15px">
+        </span>
+        <a href="$WEBSITE$" target="_blank">Website</a>
+      </div>
+      <div class='icon_holder PHONE_holder'>
+        <span style="margin-left:-10px">
+          <img src="https://maps.london.gov.uk/schools/images/phone@2x.png" style="width:19px;margin-right:-5px">
+        </span>
+        <span>$PHONE$</span>
+      </div>
+    </div>
+    <div class="standard_fields">
+      <div class="TYPE_holder">
+        <em>Site Type:</em>
+        $TYPE$
+          
+            
+            
+      </div>
+      <div class="YEAR_holder">
+        <em>Established:</em>
+        $YEAR$
+          
+            
+            
+      </div>
+      <div class="DESKS_holder">
+        <em>Number of $DESKTYPE$:</em>
+        $DESKS$
+          
+            
+            
+      </div>
+      <div class="COST_holder">
+        <em>Cost:</em>
+        $COST$
+          
+            
+            
+      </div>
+      <div class="FOOTAGE_holder">
+        <em>Cost:</em>
+        $FOOTAGE$
+          
+            
+            
+      </div>
+      <div style="display:none" class="SECTORS_holder">
+        <em>Sectors catered for:</em>
+        $SECTORS$
+          
+            
+            
+      </div>
+    </div>
+    <div class="SERVICES_holder" style="margin: 19px 0 -1px;overflow:hidden">$SERVICES$
+        </div>
+    <div id="share" style="left:3px;bottom:2px;right:auto;top:auto">
+      <a id="facebook" href="$FACEBOOK$" target="_blank" class="FACEBOOK_holder"></a>
+      <a id="twitter" href="$TWITTER$" target="_blank" class="TWITTER_holder"></a>
+    </div>
+  </div>
+</div>
+</div><script src="./js/common.js"></script>
+<script src="js/map3.js?release=20171004"></script>
+<script type="text/javascript">
   window.doorbellOptions = {
     id: '4494',
     appKey: 'YroUCiCjGTbmW7uB9vHd8yET24IbMi1lQBb7JMhslmtVDW73VRIaDjMlchgyv2PZ'
   };
   (function(w, d, t) {
     var hasLoaded = false;
-    function l() { if (hasLoaded) { return; } hasLoaded = true; window.doorbellOptions.windowLoaded = true; var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/'+window.doorbellOptions['id']+'?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g); }
-    if (w.attachEvent) { w.attachEvent('onload', l); } else if (w.addEventListener) { w.addEventListener('load', l, false); } else { l(); }
-    if (d.readyState == 'complete') { l(); }
+    function l() {
+      if (hasLoaded) {
+        return;
+      }
+      hasLoaded = true;
+      window.doorbellOptions.windowLoaded = true;
+      var g = d.createElement(t);
+      g.id = 'doorbellScript';
+      g.type = 'text/javascript';
+      g.async = true;
+      g.src = 'https://embed.doorbell.io/button/' + window.doorbellOptions['id'] + '?t=' + (new Date().getTime());
+      (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(g);
+    }
+    if (w.attachEvent) {
+      w.attachEvent('onload', l);
+    } else if (w.addEventListener) {
+      w.addEventListener('load', l, false);
+    } else {
+      l();
+    }
+    if (d.readyState == 'complete') {
+      l();
+    }
   }(window, document, 'script'));
-  </script>
-</body>
-
-</html>
+</script>
+</body></html>
