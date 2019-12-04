@@ -473,13 +473,14 @@ require([
       other_logo = "<img src='images/lep_black.png' style='height:30px'>"
     }
     swal(
-      "OPEN WORKSPACES",
-      "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
-        extra +
-        "</div><div id='logos' style='margin-top:10px;opacity:0.8;text-align:center'>" +
-        other_logo +
-        "<div><img id='mol_about_logo' src='images/mol_black.jpg' style='height:36px;margin-top:20px'></div></div>",
-      "info"
+      'On Tue 12 Dec additions and suggested edits will not be saved'//"OPEN WORKSPACES",
+//       'On Tue 12 Dec additions and suggested edits will not be saved'
+//       "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
+//         extra +
+//         "</div><div id='logos' style='margin-top:10px;opacity:0.8;text-align:center'>" +
+//         other_logo +
+//         "<div><img id='mol_about_logo' src='images/mol_black.jpg' style='height:36px;margin-top:20px'></div></div>",
+//       "info"
     )
   }
 
