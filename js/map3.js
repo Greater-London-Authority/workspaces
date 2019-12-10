@@ -473,7 +473,7 @@ require([
       other_logo = "<img src='images/lep_black.png' style='height:30px'>"
     }
     swal(
-      'On Tue 12 Dec additions and suggested edits will not be saved'//"OPEN WORKSPACES",
+      'On Tue 10 Dec additions and suggested edits will not be saved'//"OPEN WORKSPACES",
 //       'On Tue 12 Dec additions and suggested edits will not be saved'
 //       "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
 //         extra +
