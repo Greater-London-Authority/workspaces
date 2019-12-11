@@ -474,7 +474,6 @@ require([
     }
     swal(
 		"OPEN WORKSPACES",
-       'On Tue 12 Dec additions and suggested edits will not be saved'
        "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
          extra +
          "</div><div id='logos' style='margin-top:10px;opacity:0.8;text-align:center'>" +
