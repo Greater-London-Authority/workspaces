@@ -1,31 +1,31 @@
 require([
-  "esri/IdentityManager",
-  "dojo/cookie",
-  "esri/geometry/screenUtils",
-  "esri/dijit/InfoWindow",
-  "esri/map",
-  "esri/layers/FeatureLayer",
-  "esri/request",
-  "esri/layers/ArcGISDynamicMapServiceLayer",
-  "esri/symbols/PictureMarkerSymbol",
-  "esri/graphic",
-  "esri/layers/GraphicsLayer",
-  "esri/symbols/SimpleLineSymbol",
-  "esri/symbols/SimpleMarkerSymbol",
-  "esri/renderers/ClassBreaksRenderer",
-  "esri/renderers/UniqueValueRenderer",
-  "esri/renderers/SimpleRenderer",
-  "esri/Color",
-  "esri/urlUtils",
-  "esri/dijit/Search",
-  "esri/tasks/locator",
-  "esri/dijit/LocateButton",
-  "esri/InfoTemplate",
-  "esri/virtualearth/VETiledLayer",
-  "js/ClusterFeatureLayer.js",
-  "esri/layers/ArcGISTiledMapServiceLayer",
-  "esri/layers/WebTiledLayer",
-  "esri/geometry/webMercatorUtils",
+  'esri/IdentityManager',
+  'dojo/cookie',
+  'esri/geometry/screenUtils',
+  'esri/dijit/InfoWindow',
+  'esri/map',
+  'esri/layers/FeatureLayer',
+  'esri/request',
+  'esri/layers/ArcGISDynamicMapServiceLayer',
+  'esri/symbols/PictureMarkerSymbol',
+  'esri/graphic',
+  'esri/layers/GraphicsLayer',
+  'esri/symbols/SimpleLineSymbol',
+  'esri/symbols/SimpleMarkerSymbol',
+  'esri/renderers/ClassBreaksRenderer',
+  'esri/renderers/UniqueValueRenderer',
+  'esri/renderers/SimpleRenderer',
+  'esri/Color',
+  'esri/urlUtils',
+  'esri/dijit/Search',
+  'esri/tasks/locator',
+  'esri/dijit/LocateButton',
+  'esri/InfoTemplate',
+  'esri/virtualearth/VETiledLayer',
+  'js/ClusterFeatureLayer.js',
+  'esri/layers/ArcGISTiledMapServiceLayer',
+  'esri/layers/WebTiledLayer',
+  'esri/geometry/webMercatorUtils',
 ], function(
   esriId,
   cookie,
@@ -58,11 +58,11 @@ require([
   /******* Initialise Variables *******/
 
   //var service_dir = "https://maps.glatest.org.uk/arcgis/rest/services/TEST/"
-  var service_dir = "https://maps.london.gov.uk/gla/rest/services/apps/"
+  var service_dir = 'https://maps.london.gov.uk/gla/rest/services/apps/'
   var mapservice = is_admin
-    ? service_dir + "Workspaces_service_editable_service_01/FeatureServer/0"
+    ? service_dir + 'Workspaces_service_editable_service_01/FeatureServer/0'
     : service_dir +
-      "Workspaces_service_editable_verified_service_01/MapServer/0"
+      'Workspaces_service_editable_verified_service_01/MapServer/0'
 
   var initial_extent = pad_extent_by_panel(zoomed_out_central_london())
 
@@ -88,52 +88,52 @@ require([
   var last_zoom = 14 //Default zoom level
   var points_level = 12 //Level where clusters become points
 
-  if (get_var("colour") == 1) {
+  if (get_var('colour') == 1) {
     var colours = {
-      Office: "#9E0059", //red
-      Artist: "#175177", //blue
-      Maker: "#009E65", //green
-      Incubator: "#FFCC00", //yellow
-      Accelerator: "#FF6A00", //orange
-      Kitchen: "#002975", //darkblue
+      Office: '#9E0059', //red
+      Artist: '#175177', //blue
+      Maker: '#009E65', //green
+      Incubator: '#FFCC00', //yellow
+      Accelerator: '#FF6A00', //orange
+      Kitchen: '#002975', //darkblue
     }
   } else {
     var colours = {
-      Office: "#9E0059", //red
-      Artist: "#9E0059", //red
-      Maker: "#9E0059", //red
-      Incubator: "#9E0059", //red
-      Accelerator: "#9E0059", //red
-      Kitchen: "#9E0059", //red
+      Office: '#9E0059', //red
+      Artist: '#9E0059', //red
+      Maker: '#9E0059', //red
+      Incubator: '#9E0059', //red
+      Accelerator: '#9E0059', //red
+      Kitchen: '#9E0059', //red
     }
   }
 
   var filter_service_data = {
     Office: [
-      "Bike Storage",
-      "Business Support",
-      "Cafe",
-      "Creche",
-      "Dark Room",
-      "Events",
-      "Gallery",
-      "Lockers",
-      "Meeting Rooms",
-      "Outdoor Space",
-      "Parking",
-      "Reception",
-      "Showers",
-      "Workshops",
+      'Bike Storage',
+      'Business Support',
+      'Cafe',
+      'Creche',
+      'Dark Room',
+      'Events',
+      'Gallery',
+      'Lockers',
+      'Meeting Rooms',
+      'Outdoor Space',
+      'Parking',
+      'Reception',
+      'Showers',
+      'Workshops',
     ],
   }
-  var extra_service_data = ["Hot Desking", "Fibre Connection"] //Add fields that you want people to be able to select when they add/edit, but doesn't show up as a filter yet (at least until the number of people with this option increases
+  var extra_service_data = ['Hot Desking', 'Fibre Connection'] //Add fields that you want people to be able to select when they add/edit, but doesn't show up as a filter yet (at least until the number of people with this option increases
 
   //Clean up from the old version of the system, before they changed it radically
-  filter_service_data["Artist"] = filter_service_data["Office"]
-  filter_service_data["Maker"] = filter_service_data["Office"]
-  filter_service_data["Incubator"] = filter_service_data["Office"]
-  filter_service_data["Accelerator"] = filter_service_data["Office"]
-  filter_service_data["Kitchen"] = filter_service_data["Office"]
+  filter_service_data['Artist'] = filter_service_data['Office']
+  filter_service_data['Maker'] = filter_service_data['Office']
+  filter_service_data['Incubator'] = filter_service_data['Office']
+  filter_service_data['Accelerator'] = filter_service_data['Office']
+  filter_service_data['Kitchen'] = filter_service_data['Office']
 
   var service_data = $.extend({}, filter_service_data)
   for (var i in service_data)
@@ -141,199 +141,199 @@ require([
 
   var sector_data = {
     Office: [
-      "Architecture",
-      "Art in public places",
-      "Bespoke furniture",
-      "Brand Consultancy",
-      "Ceramics",
-      "Clothing and Fashion",
-      "Communications",
-      "Computing and Electronics",
-      "Cultural",
-      "Designer-Makers",
-      "Digital",
-      "Digital technology",
-      "Education and Training",
-      "Film and video",
-      "Film makers",
-      "Finance",
-      "Fine arts and crafts",
-      "Glassmaking",
-      "Healthcare",
-      "Installation",
-      "Jewellery",
-      "Jewellery and precious metals",
-      "Live art",
-      "Management Consultancy",
-      "Marketing",
-      "Metalwork",
-      "Millinery",
-      "Multi media",
-      "Music and Photography",
-      "Other",
-      "Painting",
-      "Photography",
-      "Printmaking",
-      "Product Design",
-      "Production",
-      "Publishing",
-      "Sciences",
-      "Screenprinting",
-      "Sculpture",
-      "Smart Cities Technology",
-      "Social Enterprise and Charity",
-      "Textiles",
-      "Traditional crafts",
-      "TV",
-      "Upcycling",
-      "Woodwork",
+      'Architecture',
+      'Art in public places',
+      'Bespoke furniture',
+      'Brand Consultancy',
+      'Ceramics',
+      'Clothing and Fashion',
+      'Communications',
+      'Computing and Electronics',
+      'Cultural',
+      'Designer-Makers',
+      'Digital',
+      'Digital technology',
+      'Education and Training',
+      'Film and video',
+      'Film makers',
+      'Finance',
+      'Fine arts and crafts',
+      'Glassmaking',
+      'Healthcare',
+      'Installation',
+      'Jewellery',
+      'Jewellery and precious metals',
+      'Live art',
+      'Management Consultancy',
+      'Marketing',
+      'Metalwork',
+      'Millinery',
+      'Multi media',
+      'Music and Photography',
+      'Other',
+      'Painting',
+      'Photography',
+      'Printmaking',
+      'Product Design',
+      'Production',
+      'Publishing',
+      'Sciences',
+      'Screenprinting',
+      'Sculpture',
+      'Smart Cities Technology',
+      'Social Enterprise and Charity',
+      'Textiles',
+      'Traditional crafts',
+      'TV',
+      'Upcycling',
+      'Woodwork',
     ],
   }
-  sector_data["Artist"] = service_data["Office"]
-  sector_data["Maker"] = service_data["Office"]
+  sector_data['Artist'] = service_data['Office']
+  sector_data['Maker'] = service_data['Office']
 
   var charges_data = {
     Office: [
-      "Average_office_rent",
+      'Average_office_rent',
       [
-        "Co-working resident: less than £125 per month",
-        "Co-working resident: £125-£200 per month",
-        "Co-working resident: £200-£250 per month",
-        "Co-working resident: £250-£275 per month",
-        "Co-working resident: £300+ per month",
-        "Fixed desk: less than £250 per month",
-        "Fixed desk: £250-£300 per month",
-        "Fixed desk: £300-£375 per month",
-        "Fixed desk: £375-£450 per month",
-        "Fixed desk: £450+ per month",
-        "Flexible: less than £65 per month",
-        "Flexible: £65-£95 per month",
-        "Flexible: £95-£145 per month",
-        "Flexible: £145-£200 per month",
-        "Flexible: £200+ per month",
-        "Hot desk: less than £20 per day",
-        "Hot desk: £20-£30 per day",
-        "Hot desk: £30-£50 per day",
-        "Hot desk: £50-£65 per day",
-        "Hot desk: £65+ per day",
+        'Co-working resident: less than £125 per month',
+        'Co-working resident: £125-£200 per month',
+        'Co-working resident: £200-£250 per month',
+        'Co-working resident: £250-£275 per month',
+        'Co-working resident: £300+ per month',
+        'Fixed desk: less than £250 per month',
+        'Fixed desk: £250-£300 per month',
+        'Fixed desk: £300-£375 per month',
+        'Fixed desk: £375-£450 per month',
+        'Fixed desk: £450+ per month',
+        'Flexible: less than £65 per month',
+        'Flexible: £65-£95 per month',
+        'Flexible: £95-£145 per month',
+        'Flexible: £145-£200 per month',
+        'Flexible: £200+ per month',
+        'Hot desk: less than £20 per day',
+        'Hot desk: £20-£30 per day',
+        'Hot desk: £30-£50 per day',
+        'Hot desk: £50-£65 per day',
+        'Hot desk: £65+ per day',
       ],
     ],
     Artist: [
-      "Average_studio_rent",
-      ["Free", "Less than £8", "£8 - £11", "£11 - £19", "More than £19"],
+      'Average_studio_rent',
+      ['Free', 'Less than £8', '£8 - £11', '£11 - £19', 'More than £19'],
     ],
     Maker: [
-      "access_criteria",
+      'access_criteria',
       [
-        "Day rate access",
-        "Free workshops",
-        "Membership",
-        "Paid courses only",
-        "Studio space",
+        'Day rate access',
+        'Free workshops',
+        'Membership',
+        'Paid courses only',
+        'Studio space',
       ],
     ],
   }
 
   var ignore_fields = [
-    "objectid",
-    "sectors_catered_for",
-    "services",
-    "borough",
-    "edit_id",
-    "site_id",
-    "verified",
-    "photo",
-    "x",
-    "y",
-    "shape",
+    'objectid',
+    'sectors_catered_for',
+    'services',
+    'borough',
+    'edit_id',
+    'site_id',
+    'verified',
+    'photo',
+    'x',
+    'y',
+    'shape',
   ] //["OBJECTID", "Shape", "opening_times_weekday", "opening_times_weekend", "POINT_X", "POINT_Y" ];
   var admin_only_fields = [
-    "contact_email",
-    "if_lease___sublease_how_many_ye",
-    "do_you_expect_to_be_able_to_ren",
-    "contacted",
-    "contact___complete_priority",
-    "known_contact",
-    "completed_",
-    "update_date",
+    'contact_email',
+    'if_lease___sublease_how_many_ye',
+    'do_you_expect_to_be_able_to_ren',
+    'contacted',
+    'contact___complete_priority',
+    'known_contact',
+    'completed_',
+    'update_date',
   ]
   var fields_order = [
-    "site_name",
-    "site_type",
-    "address",
-    "post_code",
-    "website",
-    "facebook",
-    "twitter",
+    'site_name',
+    'site_type',
+    'address',
+    'post_code',
+    'website',
+    'facebook',
+    'twitter',
   ]
-  var required_fields = ["site_name"]
+  var required_fields = ['site_name']
   var fields_require_ints = [
-    "year_established__site_",
-    "gross_internal_area__sqft_",
-    "number_of_occupants",
-    "number_of_desks__studios__workb",
-    "cost_of_studios__£_sqft_pa_",
-    "cost_month__exact_",
-    "if_lease___sublease_how_many_ye",
+    'year_established__site_',
+    'gross_internal_area__sqft_',
+    'number_of_occupants',
+    'number_of_desks__studios__workb',
+    'cost_of_studios__£_sqft_pa_',
+    'cost_month__exact_',
+    'if_lease___sublease_how_many_ye',
   ]
-  var fields_require_website = ["website", "twitter", "facebook"]
+  var fields_require_website = ['website', 'twitter', 'facebook']
   var fields_require_email = [] //"contact_email"];
 
   var info_buttons = {
-    workspace_provider: "Name of the company that owns this Workspace.",
-    facebook: "The full URL link to your Facebook Page.",
-    twitter: "The full URL link to your Twitter profile page.",
+    workspace_provider: 'Name of the company that owns this Workspace.',
+    facebook: 'The full URL link to your Facebook Page.',
+    twitter: 'The full URL link to your Twitter profile page.',
   }
 
-  var boolean_dropdown = ["", "No", "Yes"]
+  var boolean_dropdown = ['', 'No', 'Yes']
   var field_dropdowns = {
     site_type: [
-      ["Co-working", "Co-working"],
-      ["Artist studios", "Artist"],
-      ["Makerspace", "Maker"],
-      ["Accelerator", "Accelerator"],
-      ["Incubator", "Incubator"],
-      ["Kitchen", "Kitchen"],
+      ['Co-working', 'Co-working'],
+      ['Artist studios', 'Artist'],
+      ['Makerspace', 'Maker'],
+      ['Accelerator', 'Accelerator'],
+      ['Incubator', 'Incubator'],
+      ['Kitchen', 'Kitchen'],
     ],
     do_you_expect_to_be_able_to_ren: boolean_dropdown,
     contacted: boolean_dropdown,
     completed_: boolean_dropdown,
-    provision_type: ["", "Desks", "Studios", "Workbenches"],
+    provision_type: ['', 'Desks', 'Studios', 'Workbenches'],
     occupant_type: [
-      "",
-      "Businesses",
-      "Co-workers",
-      "Members",
-      "Studio Users",
-      "Workshop Users",
+      '',
+      'Businesses',
+      'Co-workers',
+      'Members',
+      'Studio Users',
+      'Workshop Users',
     ],
     cost_month_type: [
-      "",
-      "Co-working desk",
-      "Fixed desk",
-      "Full day access",
-      "Workbench",
-      "Workshop membership",
-      "Workshop membership + Pay as you go",
+      '',
+      'Co-working desk',
+      'Fixed desk',
+      'Full day access',
+      'Workbench',
+      'Workshop membership',
+      'Workshop membership + Pay as you go',
     ],
     company_status: [
-      "",
-      "Charity",
-      "Charity (college)",
-      "Charity (university)",
-      "Community benefit society",
-      "Community Interest Company",
-      "Company Limited by Guarantee",
-      "Cooperative",
-      "Limited Liability Partnership",
-      "Local authority",
-      "Not for profit organisation",
-      "Private Limited Company",
-      "Public Limited Company",
-      "Social Enterprise Company",
-      "Other",
+      '',
+      'Charity',
+      'Charity (college)',
+      'Charity (university)',
+      'Community benefit society',
+      'Community Interest Company',
+      'Company Limited by Guarantee',
+      'Cooperative',
+      'Limited Liability Partnership',
+      'Local authority',
+      'Not for profit organisation',
+      'Private Limited Company',
+      'Public Limited Company',
+      'Social Enterprise Company',
+      'Other',
     ],
-    tenure_type: ["", "Leasehold", "Licence", "Other", "Unknown"],
+    tenure_type: ['', 'Leasehold', 'Licence', 'Other', 'Unknown'],
   }
 
   /******** Main Code *********/
@@ -351,8 +351,8 @@ require([
   locations = create_pins()
 
   var london_boundary = new FeatureLayer(
-    service_dir + "common_boundaries_service_02/MapServer/0",
-    { id: "gla_boundary" }
+    service_dir + 'common_boundaries_service_02/MapServer/0',
+    { id: 'gla_boundary' }
   )
 
   map = create_map()
@@ -364,7 +364,7 @@ require([
 
   swal.setDefaults({
     html: true,
-    confirmButtonColor: "#9E0059",
+    confirmButtonColor: '#9E0059',
     html: true,
     allowOutsideClick: true,
   })
@@ -380,17 +380,17 @@ require([
       enableInfoWindow: false,
       enableSourcesMenu: false,
       zoomScale: 4000,
-      sourceCountry: "GB",
-      activeSourceIndex: "all",
-      allPlaceholder: "Find address or workspace",
+      sourceCountry: 'GB',
+      activeSourceIndex: 'all',
+      allPlaceholder: 'Find address or workspace',
       sources: [
         {
           featureLayer: locations,
-          searchFields: ["site_name"],
-          suggestionTemplate: "${site_name}",
+          searchFields: ['site_name'],
+          suggestionTemplate: '${site_name}',
           exactMatch: false,
-          outFields: ["*"],
-          name: "Workspaces",
+          outFields: ['*'],
+          name: 'Workspaces',
           maxResults: 6,
           maxSuggestions: 6,
           enableSuggestions: true,
@@ -399,12 +399,12 @@ require([
         },
         {
           locator: new Locator(
-            "//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
+            '//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer'
           ),
-          singleLineFieldName: "SingleLine",
-          countryCode: "UK",
-          outFields: ["Addr_type"],
-          name: "London",
+          singleLineFieldName: 'SingleLine',
+          countryCode: 'UK',
+          outFields: ['Addr_type'],
+          name: 'London',
           minCharacters: 3,
           localSearchOptions: {
             minScale: 300000,
@@ -420,11 +420,11 @@ require([
         },
       ],
     },
-    "search"
+    'search'
   )
   s.startup()
-  s.on("search-results", workspace.minimise)
-  s.on("select-result", function(e) {
+  s.on('search-results', workspace.minimise)
+  s.on('select-result', function(e) {
     try {
       var ref = e.result.feature.attributes.objectid
       if (ref) highlight_search = ref
@@ -432,27 +432,27 @@ require([
   })
 
   geoLocate = new LocateButton(
-    { map: map, highlightLocation: false, scale: 8000, theme: "findme" },
-    "LocateButton"
+    { map: map, highlightLocation: false, scale: 8000, theme: 'findme' },
+    'LocateButton'
   )
-  $(".findme").on("click", function() {
+  $('.findme').on('click', function() {
     show_loader(true)
   })
-  geoLocate.on("locate", function(e) {
+  geoLocate.on('locate', function(e) {
     show_loader(false)
     workspace.minimise()
   })
 
-  $(".findme").on("click", function() {
+  $('.findme').on('click', function() {
     show_loader(true)
-    $(this).addClass("searching")
+    $(this).addClass('searching')
   })
-  geoLocate.on("locate", function(e) {
+  geoLocate.on('locate', function(e) {
     try {
       show_loader(false)
-      $(".findme").removeClass("searching")
+      $('.findme').removeClass('searching')
     } catch (err) {
-      $(".findme").css("display", "none")
+      $('.findme').css('display', 'none')
     }
   })
 
@@ -463,37 +463,38 @@ require([
   about_map = function() {
     var timeStamp = Math.floor(Date.now() / 1000)
     var extra = is_mobile()
-      ? ""
-      : "<br><br>The London Open Workspaces map makes the locations and services of over 400 workspaces publicly available and is an invaluable resource for anyone with an idea that has outgrown their kitchen table."
+      ? ''
+      : '<br><br>The London Open Workspaces map makes the locations and services of over 400 workspaces publicly available and is an invaluable resource for anyone with an idea that has outgrown their kitchen table.'
     var other_logo
-    if (timeStamp > 1482386400 || getvar("show_new_logo")) {
+    if (timeStamp > 1482386400 || getvar('show_new_logo')) {
       other_logo =
         "<img src='images/leap_logo_bigger.jpg' style='margin-left:-10px'>"
     } else {
       other_logo = "<img src='images/lep_black.png' style='height:30px'>"
     }
     swal(
-		"OPEN WORKSPACES",
-       "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
-         extra +
-         "</div><div id='logos' style='margin-top:10px;opacity:0.8;text-align:center'>" +
-         other_logo +
-         "<div><img id='mol_about_logo' src='images/mol_black.jpg' style='height:36px;margin-top:20px'></div></div>",
-       "info"
+      'OPEN WORKSPACES',
+      '<div><strong>CURRENTLY UNDER MAINTENANCE (2020-10-06)</strong></div><br>' +
+        "<div style='text-align:left'>This map is an interactive guide to London's incubators and co-working spaces alongside other start-up workspaces, artists' studios and maker-spaces. " +
+        extra +
+        "</div><div id='logos' style='margin-top:10px;opacity:0.8;text-align:center'>" +
+        other_logo +
+        "<div><img id='mol_about_logo' src='images/mol_black.jpg' style='height:36px;margin-top:20px'></div></div>",
+      'info'
     )
   }
 
   disclaimer = function() {
     swal(
-      "DISCLAIMER",
+      'DISCLAIMER',
       "<div style='text-align:left; overflow-y: scroll; max-height:20em;'>Please note that links to websites outside of the <a href='https://maps.london.gov.uk/workspaces/'>London Open Workspaces Map</a> do not constitute official endorsements or approval by the London Growth Hub or London Economic Action Partnership (LEAP) of any private or public sector website, product, or service.<br><br>" +
-        "We cannot be responsible for the privacy policies and practices of other sites, even if you access them using links from our Site, and we therefore recommend that you check the privacy policy of each site that you visit.<br><br>" +
-        "If you linked to our Site from a third-party site, we cannot be responsible for the privacy policies and practices of the owners or operators of that third party site, and we therefore recommend that you check the policy of that third party site, and contact its owner or operator if you have any concerns or questions.<br><br>" +
+        'We cannot be responsible for the privacy policies and practices of other sites, even if you access them using links from our Site, and we therefore recommend that you check the privacy policy of each site that you visit.<br><br>' +
+        'If you linked to our Site from a third-party site, we cannot be responsible for the privacy policies and practices of the owners or operators of that third party site, and we therefore recommend that you check the policy of that third party site, and contact its owner or operator if you have any concerns or questions.<br><br>' +
         "If you wish to raise a concern about the London Open Workspaces Map or a site you were linked to via the map please email <a href='mailto:GrowthHub@london.gov.uk'>GrowthHub@london.gov.uk</a>.<br><br>" +
-        "The London Growth Hub’s full terms can be found here:" +
+        'The London Growth Hub’s full terms can be found here:' +
         '<ul><li><a href="https://www.growthhub.london/terms-of-service/">Terms & Conditions</a></li>' +
         '<li><a href="https://www.growthhub.london/privacy-policy/">Privacy Policy</a></li></ul></div>',
-      ""
+      ''
     )
   }
 
@@ -501,19 +502,19 @@ require([
 
   help_verify_edits = function() {
     swal(
-      "Verifying Edits",
-      "The values in the dropdown-boxes are edits that users of this map have made on this Workspace. You can choose to select the [Ignore Edits] option to ignore an edit, or you can select an edit from the dropdown to set it live (though this will not happen till after you click the Verify button). <br><br> If there is more than 1 other value in a dropdown box, that means that there has been more than 1 edit made to the same piece of data.  The further down the dropdown-box that an edit is listed, the more recently that edit was made.",
-      "info"
+      'Verifying Edits',
+      'The values in the dropdown-boxes are edits that users of this map have made on this Workspace. You can choose to select the [Ignore Edits] option to ignore an edit, or you can select an edit from the dropdown to set it live (though this will not happen till after you click the Verify button). <br><br> If there is more than 1 other value in a dropdown box, that means that there has been more than 1 edit made to the same piece of data.  The further down the dropdown-box that an edit is listed, the more recently that edit was made.',
+      'info'
     )
   }
 
   minimise = function(b) {
     is_minimised = b !== false
-    var move_by = is_minimised ? -($("#panel").width() + 20) : 0
-    if (!is_minimised) $("#menu_button").hide()
-    $("#panel").animate({ "margin-left": move_by }, function() {
+    var move_by = is_minimised ? -($('#panel').width() + 20) : 0
+    if (!is_minimised) $('#menu_button').hide()
+    $('#panel').animate({ 'margin-left': move_by }, function() {
       if (is_minimised) {
-        $("#menu_button").fadeIn()
+        $('#menu_button').fadeIn()
       }
     })
   }
@@ -524,29 +525,29 @@ require([
     var filters = [] //["X IS NOT NULL"];
     var has_filters = false
 
-    $("#filters").toggleClass("new_mode", dept == "New")
+    $('#filters').toggleClass('new_mode', dept == 'New')
 
-    if (dept == "New") {
-      filters.push("verified=0")
+    if (dept == 'New') {
+      filters.push('verified=0')
     } else {
-      filters.push("verified=1")
+      filters.push('verified=1')
 
       var basic_filter_num = filters.length
 
       //Check workspace types
       var types = []
-      $("#workspace_types input:checked").each(function() {
+      $('#workspace_types input:checked').each(function() {
         types.push("site_type='" + $(this).val() + "'")
       })
-      if (types.length > 0) filters.push("(" + types.join(" OR ") + ")")
+      if (types.length > 0) filters.push('(' + types.join(' OR ') + ')')
 
       //Check services
-      $("#" + dept + "_services input:checked").each(function() {
+      $('#' + dept + '_services input:checked').each(function() {
         filters.push("upper(services) LIKE upper('%" + $(this).val() + "%')")
       })
 
       //Check sectors
-      var sector = $("#sectors select").val()
+      var sector = $('#sectors select').val()
       if (sector && sector != -1)
         filters.push(
           "upper(sectors_catered_for) LIKE upper('%" + sector + "%')"
@@ -565,14 +566,14 @@ require([
       has_filters = basic_filter_num != filters.length
     }
 
-    $("#footer").toggleClass("filters", has_filters)
+    $('#footer').toggleClass('filters', has_filters)
 
-    if (filters.length == 0) filters.push("1=1")
+    if (filters.length == 0) filters.push('1=1')
 
     if (!loading) check_extent = true
     last_filter = id
 
-    filter = filters.join(" AND ")
+    filter = filters.join(' AND ')
     db(filter)
 
     show_loader(true)
@@ -594,7 +595,7 @@ require([
       sectors.show(dept)
       services.show(dept)
       charges.show(dept)
-      $("#bonus_filter_holder").css("display", dept == -1 ? "none" : "block")
+      $('#bonus_filter_holder').css('display', dept == -1 ? 'none' : 'block')
     },
     init: function() {
       sectors.init()
@@ -607,13 +608,13 @@ require([
   sectors = {
     init: function() {
       var out = "<select><option value='-1'>All Sectors</option>"
-      for (var x = 0; x < sector_data["Office"].length; x++) {
-        out += "<option>" + sector_data["Office"][x] + "</option>"
+      for (var x = 0; x < sector_data['Office'].length; x++) {
+        out += '<option>' + sector_data['Office'][x] + '</option>'
       }
-      out += "</select>"
-      $("#sectors")
+      out += '</select>'
+      $('#sectors')
         .html(out)
-        .find("select")
+        .find('select')
         .change(sectors.update)
     },
     show: function(dept) {
@@ -622,12 +623,12 @@ require([
     },
     update: function() {
       sectors.check_colour()
-      do_filter("sector")
+      do_filter('sector')
     },
     check_colour: function() {
-      $("#sectors select").toggleClass(
-        "highlight",
-        $("#sectors select").val() != -1
+      $('#sectors select').toggleClass(
+        'highlight',
+        $('#sectors select').val() != -1
       )
     },
     undo: function() {
@@ -637,7 +638,7 @@ require([
       sectors.update()
     },
     clear: function() {
-      $("#sectors select").val(-1)
+      $('#sectors select').val(-1)
       sectors.check_colour()
     },
   }
@@ -647,28 +648,28 @@ require([
       for (var i in charges_data) {
         var out = "<select><option value='-1'>Any Price</option>"
         for (var x = 0; x < charges_data[i][1].length; x++) {
-          out += "<option>" + charges_data[i][1][x] + "</option>"
+          out += '<option>' + charges_data[i][1][x] + '</option>'
         }
-        out += "</select>"
-        $("#" + i + "_charge")
+        out += '</select>'
+        $('#' + i + '_charge')
           .html(out)
-          .find("select")
+          .find('select')
           .change(charges.update)
       }
     },
     show: function(dept) {
-      $("#charges .cat").css("display", "none")
-      if (dept != -1) $("#" + dept + "_charge").css("display", "block")
+      $('#charges .cat').css('display', 'none')
+      if (dept != -1) $('#' + dept + '_charge').css('display', 'block')
     },
     update: function() {
       charges.check_colour()
-      do_filter("charge")
+      do_filter('charge')
     },
     check_colour: function() {
       var dept = workspace_type()
-      $("#" + dept + "_charge select").toggleClass(
-        "highlight",
-        $("#" + dept + "_charge select").val() != -1
+      $('#' + dept + '_charge select').toggleClass(
+        'highlight',
+        $('#' + dept + '_charge select').val() != -1
       )
     },
     undo: function() {
@@ -678,42 +679,42 @@ require([
       charges.update()
     },
     clear: function() {
-      $("#" + workspace_type() + "_charge select").val(-1)
+      $('#' + workspace_type() + '_charge select').val(-1)
       charges.check_colour()
     },
   }
 
   workspace_types = {
     init: function() {
-      $("#workspace_types input").change(workspace_types.update)
+      $('#workspace_types input').change(workspace_types.update)
     },
     update: function() {
       workspace_types.update_visibility()
-      do_filter("workspace_type")
+      do_filter('workspace_type')
     },
     update_visibility: function() {
       var types = []
-      $("#workspace_types input:checked").each(function() {
+      $('#workspace_types input:checked').each(function() {
         types.push(
           $(this)
             .parent()
-            .find("span")
+            .find('span')
             .html()
         )
       })
-      $("#desk_price").css(
-        "display",
-        types.length == 1 && types[0] == "Artists" ? "none" : "block"
+      $('#desk_price').css(
+        'display',
+        types.length == 1 && types[0] == 'Artists' ? 'none' : 'block'
       )
-      $("#space_price").css(
-        "display",
-        types.length >= 1 && $.inArray("Artists", types) == -1
-          ? "none"
-          : "block"
+      $('#space_price').css(
+        'display',
+        types.length >= 1 && $.inArray('Artists', types) == -1
+          ? 'none'
+          : 'block'
       )
     },
     clear: function() {
-      $("#workspace_types input").prop("checked", false)
+      $('#workspace_types input').prop('checked', false)
     },
     undo: function() {
       services.clear()
@@ -726,56 +727,56 @@ require([
   services = {
     init: function() {
       for (var i in filter_service_data) {
-        var out = ""
+        var out = ''
         for (var x = 0; x < filter_service_data[i].length; x++) {
           out +=
             "<label><input type='checkbox' value='" +
             filter_service_data[i][x] +
             "'> <span>" +
             filter_service_data[i][x] +
-            "</span></label>"
+            '</span></label>'
         }
-        $("#" + i + "_services")
+        $('#' + i + '_services')
           .html(out)
-          .find("input")
+          .find('input')
           .change(services.update)
       }
     },
     show: function(dept) {
-      $("#services .cat").css("display", "none")
-      if (dept != -1) $("#" + dept + "_services").css("display", "block")
+      $('#services .cat').css('display', 'none')
+      if (dept != -1) $('#' + dept + '_services').css('display', 'block')
     },
     update: function() {
-      if ($(this).is("input")) {
+      if ($(this).is('input')) {
         services.last_filter = $(this).val()
         $("#filters input[value='" + $(this).val() + "']").prop(
-          "checked",
-          $(this).prop("checked")
+          'checked',
+          $(this).prop('checked')
         )
       }
       services.select_all.set_ui()
-      do_filter("service")
+      do_filter('service')
     },
     last_filter: false,
     select_all: {
       set_ui: function() {
-        $("#select_all").toggleClass(
-          "selected",
-          !$("#" + workspace_type() + "_services input:not(:checked)").length
+        $('#select_all').toggleClass(
+          'selected',
+          !$('#' + workspace_type() + '_services input:not(:checked)').length
         )
       },
       go: function(b) {
-        if (b === undefined) b = !$("#select_all").hasClass("selected")
-        $("#" + workspace_type() + "_services input").prop("checked", b)
+        if (b === undefined) b = !$('#select_all').hasClass('selected')
+        $('#' + workspace_type() + '_services input').prop('checked', b)
         services.update()
       },
     },
     clear: function(keep_last) {
       //$("#services input").prop("checked", false);
       keep_last = !!keep_last
-      $("#services input").each(function() {
+      $('#services input').each(function() {
         $(this).prop(
-          "checked",
+          'checked',
           keep_last && $(this).val() == services.last_filter
         )
       })
@@ -791,17 +792,17 @@ require([
   }
 
   go_back_to_map = function() {
-    $("body")
-      .removeClass("showinfo")
-      .addClass("min")
-    hash.update("map")
+    $('body')
+      .removeClass('showinfo')
+      .addClass('min')
+    hash.update('map')
   }
 
   select_prompt = function() {
     swal(
-      "Select an Edit",
-      "(From the drop-down box below the checkboxes)",
-      "warning"
+      'Select an Edit',
+      '(From the drop-down box below the checkboxes)',
+      'warning'
     )
   }
 
@@ -821,33 +822,33 @@ require([
   }
 
   show_thumb = function(b) {
-    did("thumb").style.display = b ? "block" : "none"
+    did('thumb').style.display = b ? 'block' : 'none'
   }
 
   /********** Helper functions **********/
 
   function create_map() {
-    var map = new Map("mapDiv", {
+    var map = new Map('mapDiv', {
       extent: initial_extent,
       basemap: create_basemaps({
-        types: ["plain", "satellite", "buildings", "watercolour"],
-        css: { right: "65px !important" },
+        types: ['plain', 'satellite', 'buildings', 'watercolour'],
+        css: { right: '65px !important' },
       }),
       maxZoom: 18,
       logo: false,
       showInfoWindowOnClick: false,
     })
-    map.on("zoom-end", map_zoom_end)
-    map.on("load", function() {
+    map.on('zoom-end', map_zoom_end)
+    map.on('load', function() {
       do_filter(false, true)
 
       last_zoom = map.getZoom()
       map_zoom_end(map.getLevel())
       bonus_filters.init()
-      $("#big_add").css("display", "block")
+      $('#big_add').css('display', 'block')
       if (window.top != window.self) map.disableScrollWheelZoom()
     })
-    map.on("zoom-end", function(e) {
+    map.on('zoom-end', function(e) {
       map.infoWindow.hide()
     })
     return map
@@ -855,11 +856,11 @@ require([
 
   function create_credentials() {
     var credentials = {
-      store_as: "esri_jsapi_id_manager_data",
+      store_as: 'esri_jsapi_id_manager_data',
       init: function() {
         credentials.load()
-        esriId.on("credential-create", credentials.store)
-        esriId.on("dialog-create", credentials.show_login)
+        esriId.on('credential-create', credentials.store)
+        esriId.on('dialog-create', credentials.show_login)
         esriId.checkSignInStatus(mapservice).then(function(e) {
           if (e.token) {
             credentials.success()
@@ -869,11 +870,11 @@ require([
         })
       },
       show_login: function(b) {
-        $("body").toggleClass("login", b !== false)
+        $('body').toggleClass('login', b !== false)
       },
       load: function() {
         var idJson = cookie(credentials.store_as)
-        if (idJson && idJson != "null" && idJson.length > 4) {
+        if (idJson && idJson != 'null' && idJson.length > 4) {
           idObject = JSON.parse(idJson)
           esriId.initialize(idObject)
         }
@@ -886,32 +887,32 @@ require([
         cookie(credentials.store_as, idString)
       },
       attempt: function() {
-        var username = $("#uname").val()
-        var password = $("#pwd").val()
+        var username = $('#uname').val()
+        var password = $('#pwd').val()
         if (!username || !password) return
 
-        $("#mylogin .loader").css("display", "block")
-        $("#mylogin .content").css("display", "none")
-        $(".esriSignInDialog #dijit_form_ValidationTextBox_0").val(username)
-        $(".esriSignInDialog #dijit_form_ValidationTextBox_1").val(password)
-        $("#dijit_form_Button_0").click()
+        $('#mylogin .loader').css('display', 'block')
+        $('#mylogin .content').css('display', 'none')
+        $('.esriSignInDialog #dijit_form_ValidationTextBox_0').val(username)
+        $('.esriSignInDialog #dijit_form_ValidationTextBox_1').val(password)
+        $('#dijit_form_Button_0').click()
 
         var check = setInterval(function() {
-          if ($("#dijit_form_Button_0_label").html() == "OK") {
+          if ($('#dijit_form_Button_0_label').html() == 'OK') {
             //Finished asking
-            if ($(".esriErrorMsg").css("display") == "none") {
+            if ($('.esriErrorMsg').css('display') == 'none') {
               credentials.success()
             } else {
-              swal("Invalid", "Your username or password were invalid", "error")
+              swal('Invalid', 'Your username or password were invalid', 'error')
             }
-            $("#mylogin .loader").css("display", "none")
-            $("#mylogin .content").css("display", "block")
+            $('#mylogin .loader').css('display', 'none')
+            $('#mylogin .content').css('display', 'block')
             clearInterval(check)
           }
         }, 100)
       },
       success: function() {
-        cookie("signed_in", 1) //for quick (not required to be secure) checks
+        cookie('signed_in', 1) //for quick (not required to be secure) checks
         credentials.show_login(false)
         //$("body").css("background", "none");
         //$("#mapDiv").css("display", "block");
@@ -925,21 +926,21 @@ require([
   }
 
   function format_title(g) {
-    var title = clean_title(g.attributes["site_name"])
-    if (workspace_type() == "New") {
-      title = (has_val(g.attributes["edit_id"]) ? "Edit" : "New") + ": " + title
+    var title = clean_title(g.attributes['site_name'])
+    if (workspace_type() == 'New') {
+      title = (has_val(g.attributes['edit_id']) ? 'Edit' : 'New') + ': ' + title
     }
-    return "<span>" + title + "</span>"
+    return '<span>' + title + '</span>'
   }
 
   function create_pins() {
     var locations = new FeatureLayer(mapservice, {
       mode: FeatureLayer.MODE_ONDEMAND,
-      id: "pins",
-      outFields: ["*"],
+      id: 'pins',
+      outFields: ['*'],
       infoTemplate: new InfoTemplate(format_title, getTextContent),
     })
-    locations.on("mouse-over", function(e) {
+    locations.on('mouse-over', function(e) {
       if (last_hover) {
         if (last_hover.graphic == e.graphic) return
         hover_pin(last_hover, false) //IE sometimes doesn't register mouse-outs
@@ -948,63 +949,63 @@ require([
       show_thumb(true)
       hover_pin(e, true)
     })
-    locations.on("load", fetch_new_workspaces)
+    locations.on('load', fetch_new_workspaces)
 
-    var click_event = is_touch_device() ? "mouse-over" : "mouse-down"
+    var click_event = is_touch_device() ? 'mouse-over' : 'mouse-down'
     locations.on(click_event, function(e) {
       show_thumb(false)
       var query = new esri.tasks.Query()
       query.geometry = pointToExtent(map, e.graphic.geometry, 0) //Search 2px around the actual point stored for the school-graphic clicked, to see if another school has a common location (most commonly primary/secondary)
       locations.queryFeatures(query, function(featureSet) {
         map.infoWindow.setFeatures(featureSet.features)
-        $(".esriPopup").css("opacity", 0)
-        map.infoWindow.anchor = "auto"
+        $('.esriPopup').css('opacity', 0)
+        map.infoWindow.anchor = 'auto'
         map.infoWindow.show(e.graphic.geometry) //change to e.mapPoint if want to show popup where the click occured
         infoWindow_reposition(e)
       })
       e.stopPropagation()
     })
-    locations.on("error", check_network)
-    locations.on("mouse-out", function(e) {
+    locations.on('error', check_network)
+    locations.on('mouse-out', function(e) {
       last_hover = false
       show_thumb(false)
       hover_pin(e, false)
     })
-    locations.on("mouse-move", function(e) {
+    locations.on('mouse-move', function(e) {
       if (last_thumb != e.graphic) {
         last_thumb = e.graphic
         var a = e.graphic.attributes
-        var name = a["site_name"]
-        if (!name) name = a["address"]
+        var name = a['site_name']
+        if (!name) name = a['address']
 
-        did("thumb").innerHTML = "<div>" + clean_title(name) + "</div>"
+        did('thumb').innerHTML = '<div>' + clean_title(name) + '</div>'
       }
 
-      did("thumb").style.left = 0
+      did('thumb').style.left = 0
       ;(function() {
         //Allows thumb position to be set, to check full 1-line width of text
         var offset = {
           top: e.clientY - 30,
           left: e.clientX + 30,
-          width: did("thumb").offsetWidth,
+          width: did('thumb').offsetWidth,
         }
         if (offset.left + offset.width + 10 >= document.body.clientWidth) {
           offset.left = offset.left - offset.width - 60
         }
         if (offset.top < 0) offset.top = 0
 
-        did("thumb").style.left = offset.left + "px"
-        did("thumb").style.top = offset.top + "px"
+        did('thumb').style.left = offset.left + 'px'
+        did('thumb').style.top = offset.top + 'px'
       })()
     })
-    locations.on("update-end", function() {
+    locations.on('update-end', function() {
       show_loader(false)
       db(locations.graphics)
       check_for_points()
       check_reset_home()
     })
 
-    locations.setRenderer(new SimpleRenderer(get_pin("Office")))
+    locations.setRenderer(new SimpleRenderer(get_pin('Office')))
 
     return locations
   }
@@ -1015,9 +1016,9 @@ require([
         if (!is_mobile()) return
         window.onhashchange = function() {
           if (!hash.updating) {
-            if ($("body").hasClass("showinfo")) {
+            if ($('body').hasClass('showinfo')) {
               go_back_to_map()
-            } else if ($("body").hasClass("min")) {
+            } else if ($('body').hasClass('min')) {
               workspace.minimise(false)
             }
           }
@@ -1041,45 +1042,45 @@ require([
     var workspace = {
       adding: false,
       init: function() {
-        map.on("mouse-move", workspace.prompt.move)
-        map.on("mouse-out", workspace.prompt.hide)
-        map.on("mouse-over", workspace.prompt.show)
-        map.on("pan-start", workspace.prompt.hide)
-        map.on("pan-end", function(e) {
+        map.on('mouse-move', workspace.prompt.move)
+        map.on('mouse-out', workspace.prompt.hide)
+        map.on('mouse-over', workspace.prompt.show)
+        map.on('pan-start', workspace.prompt.hide)
+        map.on('pan-end', function(e) {
           workspace.prompt.do_show = true
           force_clusters_hack(true)
         })
 
-        var map_click_event = is_touch_device() ? "mouse-over" : "click"
+        var map_click_event = is_touch_device() ? 'mouse-over' : 'click'
         map.on(map_click_event, function(e) {
           workspace.set_location(e)
           if (is_mobile()) map.infoWindow.hide()
         })
-        this.pin_layer = new GraphicsLayer({ id: "new_pins" })
+        this.pin_layer = new GraphicsLayer({ id: 'new_pins' })
         map.addLayer(this.pin_layer)
 
         var save_to = is_admin
-          ? "Workspaces_service_editable_service_01"
-          : "Workspaces_service_editable_edits_service_01"
+          ? 'Workspaces_service_editable_service_01'
+          : 'Workspaces_service_editable_edits_service_01'
 
         this.save_edits_layer = new FeatureLayer(
-          service_dir + save_to + "/FeatureServer/0"
+          service_dir + save_to + '/FeatureServer/0'
         )
-        this.save_edits_layer.on("edits-complete", workspace.edits_complete)
+        this.save_edits_layer.on('edits-complete', workspace.edits_complete)
 
         this.services = new workspace.checkboxes(
           service_data,
-          "services_holder",
-          "services_row",
-          "_service",
-          "Services"
+          'services_holder',
+          'services_row',
+          '_service',
+          'Services'
         )
         this.sectors = new workspace.checkboxes(
           sector_data,
-          "sector_holder",
-          "sectors_catered_for_row",
-          "_sector",
-          "Sectors Catered For"
+          'sector_holder',
+          'sectors_catered_for_row',
+          '_sector',
+          'Sectors Catered For'
         )
 
         workspace.prices.init()
@@ -1088,7 +1089,7 @@ require([
       prices: {
         timer: false,
         init: function() {
-          $("#price_slider").slider({
+          $('#price_slider').slider({
             value: this.vals.length - 1,
             min: 0,
             max: this.vals.length - 1,
@@ -1099,18 +1100,18 @@ require([
           })
           //workspace.prices.set( $( "#price_slider" ).slider( "value" ) );
         },
-        vals: [50, 100, 150, 200, 300, 400, 500, "Any Price"],
+        vals: [50, 100, 150, 200, 300, 400, 500, 'Any Price'],
         set: function(val) {
           var text
           if (val == workspace.prices.vals.length - 1) {
             text = workspace.prices.vals[val]
           } else {
-            text = "Up to £" + workspace.prices.vals[val] + " p/m"
+            text = 'Up to £' + workspace.prices.vals[val] + ' p/m'
           }
-          $("#price_text")
+          $('#price_text')
             .html(text)
-            .toggleClass("highlight", val != workspace.prices.vals.length - 1)
-          $("#price_slider").toggleClass("atZero", val == 0)
+            .toggleClass('highlight', val != workspace.prices.vals.length - 1)
+          $('#price_slider').toggleClass('atZero', val == 0)
           try {
             clearTimeout(workspace.prices.timer)
             workspace.prices.timer = setTimeout(function() {
@@ -1121,17 +1122,17 @@ require([
         clear: function() {
           var show_all_id = this.vals.length - 1
           this.set(show_all_id)
-          $("#price_slider").slider("value", show_all_id)
+          $('#price_slider').slider('value', show_all_id)
         },
         get_filter: function() {
-          var val = $("#price_slider").slider("value")
+          var val = $('#price_slider').slider('value')
           //if (val==0) return "cost_month__exact_ IS NULL";
           if (val == workspace.prices.vals.length - 1) return false
           else {
             return (
               "(site_type='Artist studios' OR cost_month__exact_<=" +
               workspace.prices.vals[val] +
-              ")"
+              ')'
             )
           }
         },
@@ -1139,7 +1140,7 @@ require([
       prices2: {
         timer: false,
         init: function() {
-          $("#price_slider2").slider({
+          $('#price_slider2').slider({
             value: this.vals.length - 1,
             min: 0,
             max: this.vals.length - 1,
@@ -1150,18 +1151,18 @@ require([
           })
           //workspace.prices2.set( $( "#price_slider2" ).slider( "value" ) );
         },
-        vals: [10, 15, 20, 30, 40, 50, 60, "Any Price"],
+        vals: [10, 15, 20, 30, 40, 50, 60, 'Any Price'],
         set: function(val) {
           var text
           if (val == workspace.prices2.vals.length - 1) {
             text = workspace.prices2.vals[val]
           } else {
-            text = "Up to £" + workspace.prices2.vals[val] + " per square foot"
+            text = 'Up to £' + workspace.prices2.vals[val] + ' per square foot'
           }
-          $("#price_slider2").toggleClass("atZero", val == 0)
-          $("#price_text2")
+          $('#price_slider2').toggleClass('atZero', val == 0)
+          $('#price_text2')
             .html(text)
-            .toggleClass("highlight", val != workspace.prices2.vals.length - 1)
+            .toggleClass('highlight', val != workspace.prices2.vals.length - 1)
           try {
             clearTimeout(workspace.prices2.timer)
             workspace.prices2.timer = setTimeout(function() {
@@ -1172,17 +1173,17 @@ require([
         clear: function() {
           var show_all_id = this.vals.length - 1
           this.set(show_all_id)
-          $("#price_slider2").slider("value", show_all_id)
+          $('#price_slider2').slider('value', show_all_id)
         },
         get_filter: function() {
-          var val = $("#price_slider2").slider("value")
+          var val = $('#price_slider2').slider('value')
           //if (val==0) return "cost_of_studios__£_sqft_pa_ IS NULL";
           if (val == workspace.prices2.vals.length - 1) return false
           else {
             return (
               "(site_type<>'Artist studios' OR cost_of_studios__£_sqft_pa_<=" +
               workspace.prices2.vals[val] +
-              ")"
+              ')'
             )
           }
         },
@@ -1195,15 +1196,15 @@ require([
           workspace.graphic = false
           workspace.verify.pin_moved = false
           workspace.editing = false
-          $("body")
-            .removeClass("placed_pin")
-            .removeClass("placing_pin")
-            .removeClass("verifying")
-            .removeClass("editing")
+          $('body')
+            .removeClass('placed_pin')
+            .removeClass('placing_pin')
+            .removeClass('verifying')
+            .removeClass('editing')
         } else {
-          $("body")
-            .addClass("placing_pin")
-            .removeClass("min")
+          $('body')
+            .addClass('placing_pin')
+            .removeClass('min')
           if (!this.data) this.fetch_field_data()
           workspace.clear_all_vals()
         }
@@ -1237,15 +1238,20 @@ require([
               if (result[0].success) {
                 workspace.close()
                 var message = is_admin
-                  ? "This workspace is now live to all users. Thank you"
-                  : "Your submission will be verified & made visible to all users in the next 2 weeks. Thank you."
-                swal("Saved", message, "success")
+                  ? 'This workspace is now live to all users. Thank you'
+                  : 'Your submission will be verified & made visible to all users in the next 2 weeks. Thank you.'
+                swal('Saved', message, 'success')
                 if (!is_admin) {
-                  graphicAttributes["site_name"]
-                    doorbell.send("A new workspace has been added called '"+graphicAttributes["site_name"]+"'.", user_det[1]);
+                  graphicAttributes['site_name']
+                  doorbell.send(
+                    "A new workspace has been added called '" +
+                      graphicAttributes['site_name'] +
+                      "'.",
+                    user_det[1]
+                  )
                   updateRSS(
                     "A new workspace has been added called '" +
-                      graphicAttributes["site_name"] +
+                      graphicAttributes['site_name'] +
                       "'.",
                     user_det[1]
                   )
@@ -1262,8 +1268,8 @@ require([
           var val = this.get_input_val(required_fields[i])
           if (!val) {
             workspace.validation_error(
-              $("#" + required_fields[i] + "_row span").html(),
-              "This is required data. You must make an entry here before you can submit this Workspace.",
+              $('#' + required_fields[i] + '_row span').html(),
+              'This is required data. You must make an entry here before you can submit this Workspace.',
               required_fields[i]
             )
             return false
@@ -1273,8 +1279,8 @@ require([
           var val = this.get_input_val(fields_require_ints[i])
           if (isNaN(val)) {
             workspace.validation_error(
-              $("#" + fields_require_ints[i] + "_row span").html(),
-              "This entry must be an integer number.",
+              $('#' + fields_require_ints[i] + '_row span').html(),
+              'This entry must be an integer number.',
               fields_require_ints[i]
             )
             return false
@@ -1285,10 +1291,10 @@ require([
           if (val) {
             if (!workspace.valid_url(val)) {
               var extra =
-                val.indexOf("http") !== 0 ? "  It must start with http://" : ""
+                val.indexOf('http') !== 0 ? '  It must start with http://' : ''
               workspace.validation_error(
-                $("#" + fields_require_website[i] + "_row span").html(),
-                "This entry must be a full website URL." + extra,
+                $('#' + fields_require_website[i] + '_row span').html(),
+                'This entry must be a full website URL.' + extra,
                 fields_require_website[i]
               )
               return false
@@ -1300,8 +1306,8 @@ require([
           if (val) {
             if (!workspace.valid_email(val)) {
               workspace.validation_error(
-                $("#" + fields_require_email[i] + "_row span").html(),
-                "This entry must be a valid email address.",
+                $('#' + fields_require_email[i] + '_row span').html(),
+                'This entry must be a valid email address.',
                 fields_require_email[i]
               )
               return false
@@ -1326,7 +1332,7 @@ require([
           {
             title: title,
             text: text,
-            type: "error",
+            type: 'error',
           },
           function() {
             workspace.focus_row(field)
@@ -1334,7 +1340,7 @@ require([
         )
       },
       focus_row: function(name) {
-        $("#" + name + "_row :nth-child(2)").focus()
+        $('#' + name + '_row :nth-child(2)').focus()
       },
       remove: function() {
         if (workspace.lock) return
@@ -1356,8 +1362,8 @@ require([
       },
       get_edit_graphics: function(oid, foo) {
         var query = new esri.tasks.Query()
-        query.where = "edit_id=" + oid
-        query.outFields = ["objectid"]
+        query.where = 'edit_id=' + oid
+        query.outFields = ['objectid']
         new esri.tasks.QueryTask(mapservice).execute(query, function(
           featureSet
         ) {
@@ -1365,7 +1371,7 @@ require([
           for (var i in featureSet.features) {
             var g = new Graphic(
               featureSet.features[i].geometry,
-              get_pin("Office")
+              get_pin('Office')
             )
             g.setAttributes(featureSet.features[i].attributes)
             to_delete.push(g)
@@ -1374,23 +1380,23 @@ require([
         })
       },
       remove_list_item: function(oid) {
-        $("#objlink_" + oid).remove()
+        $('#objlink_' + oid).remove()
         update_new_count()
       },
       close: function() {
         workspace.toggle()
-        $("#fields input").val("")
-        $("body")
-          .removeClass("verifying")
-          .removeClass("placed_pin")
+        $('#fields input').val('')
+        $('body')
+          .removeClass('verifying')
+          .removeClass('placed_pin')
         resize_panel()
       },
       get_input_values: function() {
         var graphicAttributes = {} // x: workspace.graphic.geometry.x, y: workspace.graphic.geometry.y };
-        $("#fields > div").each(function() {
-          var column_name = $(this).attr("id")
+        $('#fields > div').each(function() {
+          var column_name = $(this).attr('id')
           if (column_name) {
-            column_name = column_name.replace("_row", "")
+            column_name = column_name.replace('_row', '')
             var val = workspace.get_input_val(column_name)
             db(val)
             graphicAttributes[column_name] = val
@@ -1401,16 +1407,16 @@ require([
       get_input_val: function(name) {
         //TODO: Automaticaly get sector/service value from here.
         var val
-        if (name == "services") return workspace.services.get()
-        if (name == "sectors_catered_for") return workspace.sectors.get()
-        name = "#" + name + "_row"
-        if ($(name).find("input").length == 0) {
+        if (name == 'services') return workspace.services.get()
+        if (name == 'sectors_catered_for') return workspace.sectors.get()
+        name = '#' + name + '_row'
+        if ($(name).find('input').length == 0) {
           val = $(name)
-            .find("select")
+            .find('select')
             .val()
         } else {
           val = $(name)
-            .find("input")
+            .find('input')
             .val()
         }
         if (!val || val == -1) val = null
@@ -1421,9 +1427,9 @@ require([
         var requestHandle = esriRequest({
           url: mapservice,
           content: {
-            f: "json",
+            f: 'json',
           },
-          callbackParamName: "callback",
+          callbackParamName: 'callback',
         })
         requestHandle.then(function(e) {
           workspace.build_field_data(e)
@@ -1432,48 +1438,48 @@ require([
       },
       build_field_data: function(e) {
         workspace.data = e.fields
-        e.fields.push({ name: "geometry", alias: "Location" })
-        var out = "",
-          admin_out = ""
+        e.fields.push({ name: 'geometry', alias: 'Location' })
+        var out = '',
+          admin_out = ''
         for (var x = 0; x < e.fields.length; x++) {
           if ($.inArray(e.fields[x].name, ignore_fields) == -1) {
             var extra_info = info_buttons[e.fields[x].name]
             var info = !extra_info
-              ? ""
+              ? ''
               : '<div class="help" title="' +
                 extra_info +
                 '" onclick="workspace.field_help(\'' +
                 extra_info +
-                "')\"></div>"
+                '\')"></div>'
             var is_admin_data =
               $.inArray(e.fields[x].name, admin_only_fields) != -1
             out +=
               "<div id='" +
               e.fields[x].name +
               "_row'" +
-              (is_admin_data ? " class='admindata'" : "") +
-              "><span>" +
+              (is_admin_data ? " class='admindata'" : '') +
+              '><span>' +
               e.fields[x].alias.titlefy() +
               info +
               "</span><input type='text'><div class='prompter'></div></div>"
           }
         }
 
-        $("#new_point #fields").html(out)
+        $('#new_point #fields').html(out)
 
         for (var x = fields_order.length - 1; x >= 0; x--) {
-          $("#" + fields_order[x] + "_row").prependTo("#fields")
+          $('#' + fields_order[x] + '_row').prependTo('#fields')
         }
         for (var x = 0; x < admin_only_fields.length; x++) {
-          $("#" + admin_only_fields[x] + "_row").appendTo("#fields")
+          $('#' + admin_only_fields[x] + '_row').appendTo('#fields')
         }
 
-        $("#new_point #fields").append(
+        $('#new_point #fields').append(
           "<div onclick='workspace.show_admin_data()' class='admindataprompt'>Click to view Admin-Only Data</div>"
         )
 
         for (var i in field_dropdowns) {
-          var select = "",
+          var select = '',
             val,
             text
           for (var x in field_dropdowns[i]) {
@@ -1483,19 +1489,19 @@ require([
             } else {
               val = text = field_dropdowns[i][x]
             }
-            select += "<option value='" + val + "'>" + text + "</option>"
+            select += "<option value='" + val + "'>" + text + '</option>'
           }
           var extra =
-            i == "site_type" ? " onclick='workspace.change_type(true)'" : ""
-          $("#" + i + "_row input").replaceWith(
-            "<select" + extra + ">" + select + "</select>"
+            i == 'site_type' ? " onclick='workspace.change_type(true)'" : ''
+          $('#' + i + '_row input').replaceWith(
+            '<select' + extra + '>' + select + '</select>'
           )
         }
         workspace.change_type()
         resize_panel()
       },
       show_admin_data: function() {
-        $("#fields").addClass("showadmin")
+        $('#fields').addClass('showadmin')
       },
       change_type: function(go) {
         if (go) return true //Added 291216, because the actual services are the same for each type now, so no longer needs to be reset
@@ -1511,8 +1517,8 @@ require([
       ) {
         return {
           build: function() {
-            var classes = $("#" + main_holder).attr("class")
-            $("#" + main_holder).remove()
+            var classes = $('#' + main_holder).attr('class')
+            $('#' + main_holder).remove()
             var out =
               "<div id='" +
               main_holder +
@@ -1521,7 +1527,7 @@ require([
               "</span><div id='" +
               holder_id +
               "' class='box'><var onclick='select_prompt()'></var>"
-            var type = get_category($("#site_type_row > select").val())
+            var type = get_category($('#site_type_row > select').val())
             for (var i in data[type]) {
               out +=
                 "<label><input id='" +
@@ -1529,28 +1535,28 @@ require([
                 checkbox_suffix +
                 "' type='checkbox'><em>" +
                 data[type][i] +
-                "</em></label>"
+                '</em></label>'
             }
             out += "</div><div class='prompter'></div></div>"
-            $("#new_point #fields .admindata:first").before(out)
-            $("#" + main_holder).attr("class", classes)
+            $('#new_point #fields .admindata:first').before(out)
+            $('#' + main_holder).attr('class', classes)
           },
           get: function(as_array) {
             var out = []
-            $("#" + holder_id + " input:checked").each(function() {
+            $('#' + holder_id + ' input:checked').each(function() {
               //out.push( $(this).attr("id").replace(checkbox_suffix,"") );
               out.push(
                 $(this)
                   .parent()
-                  .find("em")
+                  .find('em')
                   .html()
               )
             })
             out = this.to_nice_array(out)
-            return as_array ? out : out.join(",")
+            return as_array ? out : out.join(',')
           },
           has_changed: function() {
-            var old_data = $("#" + holder_id).attr("data-original-value")
+            var old_data = $('#' + holder_id).attr('data-original-value')
             old_data = old_data ? old_data.split(/,\s*/) : []
             var new_data = this.get(true)
             db(old_data, new_data)
@@ -1566,11 +1572,11 @@ require([
           },
           set: function(val) {
             //if (!has_val(val)) return;
-            if (!has_val(val)) val = ""
+            if (!has_val(val)) val = ''
             var vals = this.to_nice_array(val.split(/,\s*/))
 
-            $("#" + holder_id + " input").prop("checked", false)
-            $("#" + holder_id).attr("data-original-value", vals.join(","))
+            $('#' + holder_id + ' input').prop('checked', false)
+            $('#' + holder_id).attr('data-original-value', vals.join(','))
 
             for (var x = 0; x < vals.length; x++) {
               var skip = function() {
@@ -1579,9 +1585,9 @@ require([
               }
               vals[x] = this.short_name(vals[x])
               try {
-                var checkbox = $("#" + vals[x] + checkbox_suffix)
+                var checkbox = $('#' + vals[x] + checkbox_suffix)
                 if (checkbox.length != 0) {
-                  checkbox.prop("checked", true)
+                  checkbox.prop('checked', true)
                 } else {
                   skip()
                 }
@@ -1594,9 +1600,9 @@ require([
             return n
               .trim()
               .toLowerCase()
-              .replace(/&/g, "and")
-              .replace(/ /gi, "_")
-              .replace(/[^\w\s]|_/g, "")
+              .replace(/&/g, 'and')
+              .replace(/ /gi, '_')
+              .replace(/[^\w\s]|_/g, '')
           },
         }
       },
@@ -1604,16 +1610,16 @@ require([
         if (!workspace.adding || workspace.editing) return
         workspace.place_pin(e.mapPoint)
         workspace.prompt.hide()
-        $("body")
-          .addClass("placed_pin")
-          .removeClass("placing_pin")
+        $('body')
+          .addClass('placed_pin')
+          .removeClass('placing_pin')
         workspace.show_data()
       },
       place_pin: function(point, a) {
         if (!workspace.graphic) {
           workspace.pin_layer.clear()
           a = a || {}
-          workspace.graphic = new Graphic(point, get_pin("Office"))
+          workspace.graphic = new Graphic(point, get_pin('Office'))
           workspace.graphic.setAttributes(a)
           workspace.pin_layer.add(workspace.graphic)
         } else {
@@ -1625,22 +1631,22 @@ require([
         workspace.adding = true
         if (not_new) workspace.editing = true
         map.infoWindow.hide()
-        $("body")
-          .addClass("placed_pin")
-          .addClass("verifying")
-          .removeClass("min")
-          .removeClass("showinfo")
-        $("#verify_button").html(
-          workspace_type() == "New" ? "Verify" : "Submit"
+        $('body')
+          .addClass('placed_pin')
+          .addClass('verifying')
+          .removeClass('min')
+          .removeClass('showinfo')
+        $('#verify_button').html(
+          workspace_type() == 'New' ? 'Verify' : 'Submit'
         )
         if (is_minimised) minimise(false)
         var next = function() {
           workspace.show_edit_vals(objectid, function(graphic) {
             var action = function() {
-              $("body")
-                .addClass("placed_pin")
-                .addClass("verifying")
-                .removeClass("min")
+              $('body')
+                .addClass('placed_pin')
+                .addClass('verifying')
+                .removeClass('min')
               locations.setVisibility(false)
               clusterLayer.setVisibility(false)
               workspace.show_data()
@@ -1664,14 +1670,14 @@ require([
       },
       fetch_edits: function(oid, old_vals, foo) {
         var query = new esri.tasks.Query()
-        query.where = "edit_id=" + oid
-        query.outFields = ["*"]
+        query.where = 'edit_id=' + oid
+        query.outFields = ['*']
         query.returnGeometry = true
 
         var geometries = [old_vals.geometry]
-        old_vals.geometry = "g0" //gives index of geometries array (with a g so doesn't register as !has_val()
+        old_vals.geometry = 'g0' //gives index of geometries array (with a g so doesn't register as !has_val()
 
-        $("#edit_prompt span").html(old_vals.site_name)
+        $('#edit_prompt span').html(old_vals.site_name)
 
         new esri.tasks.QueryTask(mapservice).execute(
           query,
@@ -1681,17 +1687,17 @@ require([
 
             for (var i in featureSet.features) {
               var g = featureSet.features[i]
-              if (g.attributes["objectid"]) edit_oids.push(g)
+              if (g.attributes['objectid']) edit_oids.push(g)
 
               if (!same_location(geometries[0], g.geometry)) {
-                g.attributes.geometry = "g" + geometries.length
+                g.attributes.geometry = 'g' + geometries.length
                 geometries.push(g.geometry)
               }
 
               for (var x in g.attributes) {
                 var val = g.attributes[x]
-                if ($.inArray(x, ["objectid", "edit_id", "verified"]) == -1) {
-                  if (x == "site_name") {
+                if ($.inArray(x, ['objectid', 'edit_id', 'verified']) == -1) {
+                  if (x == 'site_name') {
                     if (val == old_vals[x]) {
                       val = false
                     } else {
@@ -1708,58 +1714,58 @@ require([
 
             workspace.verify.current_edit_oids = edit_oids
 
-            $("body")
-              .addClass("editing")
-              .removeClass("min")
-            $("#fields > div").addClass("hide")
+            $('body')
+              .addClass('editing')
+              .removeClass('min')
+            $('#fields > div').addClass('hide')
             for (var i in fields) {
-              $("#" + i + "_row").removeClass("hide")
+              $('#' + i + '_row').removeClass('hide')
 
-              var dropdown = [[-1, "--- Pick an Edit ---"]]
+              var dropdown = [[-1, '--- Pick an Edit ---']]
 
-              var is_checkbox = i == "sectors_catered_for" || i == "services"
+              var is_checkbox = i == 'sectors_catered_for' || i == 'services'
               var val,
                 num = 1
 
               for (var x in fields[i]) {
-                if (i == "site_type") {
+                if (i == 'site_type') {
                   val = get_category(fields[i][x])
-                } else if (i == "geometry") {
-                  val = "Edited Location " + num++
+                } else if (i == 'geometry') {
+                  val = 'Edited Location ' + num++
                 } else {
                   val = fields[i][x]
                 }
 
                 if (!val || val == -1) {
-                  val = "[Removed by User]"
-                  fields[i][x] = ""
+                  val = '[Removed by User]'
+                  fields[i][x] = ''
                 }
-                if (is_checkbox) val = val.replace(/\,/g, ", ")
-                db((fields[i][x] + "").addslashes())
-                dropdown.push([(fields[i][x] + "").addslashes(), val])
+                if (is_checkbox) val = val.replace(/\,/g, ', ')
+                db((fields[i][x] + '').addslashes())
+                dropdown.push([(fields[i][x] + '').addslashes(), val])
               }
 
               if (!has_val(old_vals[i])) {
-                dropdown.push(["", "[Ignore Edits]"])
+                dropdown.push(['', '[Ignore Edits]'])
               } else {
                 var old_val =
-                  i == "site_type" ? get_category(old_vals[i]) : old_vals[i]
-                old_val = (old_val + "").replace(/[^\x00-\x7F]/g, "") //found a case where &#8203; snuck in, hidden & ruined email address validation
-                dropdown.push([old_val, "[Ignore Edits]"])
+                  i == 'site_type' ? get_category(old_vals[i]) : old_vals[i]
+                old_val = (old_val + '').replace(/[^\x00-\x7F]/g, '') //found a case where &#8203; snuck in, hidden & ruined email address validation
+                dropdown.push([old_val, '[Ignore Edits]'])
               }
 
-              var selectbox = $("<select></select>").on("change", function() {
+              var selectbox = $('<select></select>').on('change', function() {
                 if ($(this).val() != -1) {
                   i = $(this)
                     .parent()
                     .parent()
-                    .attr("id")
-                    .replace("_row", "")
-                  if (i == "sectors_catered_for") {
+                    .attr('id')
+                    .replace('_row', '')
+                  if (i == 'sectors_catered_for') {
                     workspace.sectors.set($(this).val())
-                  } else if (i == "services") {
+                  } else if (i == 'services') {
                     workspace.services.set($(this).val())
-                  } else if (i == "geometry") {
+                  } else if (i == 'geometry') {
                     var geom =
                       geometries[
                         $(this)
@@ -1769,7 +1775,7 @@ require([
                     workspace.place_pin(geom)
                     map.centerAndZoom(geom)
                   } else {
-                    var type = field_dropdowns[i] ? "select" : "input"
+                    var type = field_dropdowns[i] ? 'select' : 'input'
                     $(this)
                       .parent()
                       .parent()
@@ -1777,7 +1783,7 @@ require([
                       .val($(this).val())
                   }
                 }
-                $(this).toggleClass("valid", $(this).val() != -1)
+                $(this).toggleClass('valid', $(this).val() != -1)
               })
 
               for (var z in dropdown) {
@@ -1786,18 +1792,18 @@ require([
                     dropdown[z][0] +
                     '">' +
                     dropdown[z][1] +
-                    "</option>"
+                    '</option>'
                 )
               }
 
               var current_value = has_val(old_vals[i])
                 ? old_vals[i]
-                : "<i>None</i>"
+                : '<i>None</i>'
 
               var show_original = is_checkbox
-                ? ""
-                : "<div>Original Value: " + current_value + "</div>"
-              $("#" + i + "_row > div.prompter")
+                ? ''
+                : '<div>Original Value: ' + current_value + '</div>'
+              $('#' + i + '_row > div.prompter')
                 .html(show_original)
                 .append(selectbox)
             }
@@ -1823,7 +1829,7 @@ require([
           if (workspace.lock || !workspace.validate()) return
           workspace.lock = true
           var success = true
-          $("#fields > div > div > select:visible").each(function() {
+          $('#fields > div > div > select:visible').each(function() {
             if ($(this).val() == -1) {
               success = false
               return false //exit loop
@@ -1833,14 +1839,14 @@ require([
             workspace.verify.admin(function() {
               show_big_loader(true)
               workspace.remove_list_item(
-                workspace.graphic.attributes["objectid"]
+                workspace.graphic.attributes['objectid']
               )
             }, workspace.verify.current_edit_oids)
           } else {
             swal(
-              "Check all Edits",
-              "You have not yet selected from the drop-downs whether to accept some of the edits",
-              "warning"
+              'Check all Edits',
+              'You have not yet selected from the drop-downs whether to accept some of the edits',
+              'warning'
             )
             workspace.lock = false
           }
@@ -1849,8 +1855,8 @@ require([
         admin: function(foo, extra_deletes) {
           swal(
             {
-              title: "Going Live",
-              text: "Are you sure you want to put this live to all users?",
+              title: 'Going Live',
+              text: 'Are you sure you want to put this live to all users?',
               showCancelButton: true,
             },
             function(b) {
@@ -1889,7 +1895,7 @@ require([
           db(differences)
           if (differences.length == 0 && !workspace.verify.pin_moved) {
             workspace.toggle()
-            swal("No changes", "You did not make any changes.")
+            swal('No changes', 'You did not make any changes.')
           } else {
             workspace.verify.get_user(function(user_det) {
               var a = {}
@@ -1903,12 +1909,12 @@ require([
 
               var old_name = workspace.graphic.attributes.site_name
               a.site_name = a.site_name
-                ? old_name + "@@@" + a.site_name
+                ? old_name + '@@@' + a.site_name
                 : old_name
 
               a.verified = 0
 
-              var g = new Graphic(workspace.graphic.geometry, get_pin("Office"))
+              var g = new Graphic(workspace.graphic.geometry, get_pin('Office'))
               g.setAttributes(a)
 
               show_big_loader(true)
@@ -1919,9 +1925,12 @@ require([
                   if (result[0].success) {
                     workspace.close()
                     var message =
-                      "Your edit will be verified & made visible to all users within 2 weeks. Thank you."
-                    swal("Saved", message, "success")
-					doorbell.send("The workspace '"+old_name+"' has been edited.", user_det[1]);
+                      'Your edit will be verified & made visible to all users within 2 weeks. Thank you.'
+                    swal('Saved', message, 'success')
+                    doorbell.send(
+                      "The workspace '" + old_name + "' has been edited.",
+                      user_det[1]
+                    )
                     updateRSS(
                       "The workspace '" + old_name + "' has been edited.",
                       user_det[1]
@@ -1935,32 +1944,32 @@ require([
           }
         },
         user_det: false,
-        user_splitter: " *** ", //to show what in the contact_email field splits the various user info
+        user_splitter: ' *** ', //to show what in the contact_email field splits the various user info
         get_user: function(foo) {
           if (workspace.verify.user_det) return foo(user_det)
-          else if (is_admin) return foo(["ADMIN"])
+          else if (is_admin) return foo(['ADMIN'])
           swal(
             {
-              title: is_mobile() ? "" : "And for our records...",
-              text: $("#contact_form").html(),
-              confirmButtonText: "Submit",
+              title: is_mobile() ? '' : 'And for our records...',
+              text: $('#contact_form').html(),
+              confirmButtonText: 'Submit',
               showCancelButton: true,
-              cancelButtonText: "Back",
+              cancelButtonText: 'Back',
               closeOnConfirm: false,
             },
             function(b) {
               if (b) {
                 var contact = []
                 var i = 0
-                $(".sweet-alert #fields > div")
-                  .find("input,select")
+                $('.sweet-alert #fields > div')
+                  .find('input,select')
                   .each(function(i) {
                     if (i == 1 && !workspace.valid_email($(this).val())) {
-                      alert("Please enter in a valid email address.")
+                      alert('Please enter in a valid email address.')
                       return false
                     } else if (i != 2 && !has_val($(this).val())) {
                       //contact number can be blank
-                      alert("Please fill out all required fields.")
+                      alert('Please fill out all required fields.')
                       return false
                     } else {
                       contact.push($(this).val())
@@ -1974,18 +1983,18 @@ require([
               }
             }
           )
-          $(".sweet-alert.showSweetAlert input")
+          $('.sweet-alert.showSweetAlert input')
             .get(0)
             .focus()
 
           //Tab-index for some reason broken in "And for our records..." popup. This fixes it.
-          $(".sweet-alert #fields > div").each(function() {
+          $('.sweet-alert #fields > div').each(function() {
             var next_index = $(this).index() + 2
             $(this)
-              .find("input")
-              .on("blur", function() {
-                $("#fields > div:nth-child(" + next_index + ")")
-                  .find("input, select")
+              .find('input')
+              .on('blur', function() {
+                $('#fields > div:nth-child(' + next_index + ')')
+                  .find('input, select')
                   .focus()
               })
           })
@@ -1996,20 +2005,20 @@ require([
           var all = workspace.get_input_values()
 
           for (var i in all) {
-            if (i == "services") {
+            if (i == 'services') {
               if (workspace.services.has_changed()) changed_columns.push(i)
-            } else if (i == "sectors_catered_for") {
+            } else if (i == 'sectors_catered_for') {
               if (workspace.sectors.has_changed()) changed_columns.push(i)
             } else if (all[i] != workspace.graphic.attributes[i]) {
               var word = workspace.graphic.attributes[i]
-              if (word === "0") word = 0 //annoying js quirk, only in an IF statement "0" is true
+              if (word === '0') word = 0 //annoying js quirk, only in an IF statement "0" is true
               var no_changed_zero = !(
                 (!word || word == -1) &&
                 (!all[i] || all[i] == -1)
               ) //i.e. has changed from one form of no val to another (i.e. legacy rows have random zeros in!)
               if (
                 no_changed_zero &&
-                (!all[i] || !word || (all[i] + "").trim() != (word + "").trim())
+                (!all[i] || !word || (all[i] + '').trim() != (word + '').trim())
               ) {
                 changed_columns.push(i)
               }
@@ -2021,11 +2030,11 @@ require([
       minimise: function(b) {
         if (b !== false) b = true
         if (!is_mobile() && b) return
-        $("body").toggleClass("min", b)
-        hash.update(b ? "map" : "")
+        $('body').toggleClass('min', b)
+        hash.update(b ? 'map' : '')
       },
       field_help: function(info) {
-        swal("", info, "info")
+        swal('', info, 'info')
       },
       edits_complete: function(result) {
         show_loader(false)
@@ -2036,24 +2045,24 @@ require([
           locations.refresh()
           var message, title, oid
           if (is_update) {
-            var type = workspace_type() == "New" ? "verified" : "edited"
+            var type = workspace_type() == 'New' ? 'verified' : 'edited'
             oid = result.updates[0].objectId
-            title = "Saved"
+            title = 'Saved'
             message =
-              "You have " +
+              'You have ' +
               type +
-              " this Workspace.<br>It is now live to all users. Well done!"
+              ' this Workspace.<br>It is now live to all users. Well done!'
           } else {
-            title = "Deleted"
-            message = "You have successfully deleted this Workspace."
+            title = 'Deleted'
+            message = 'You have successfully deleted this Workspace.'
             oid = result.deletes[0].objectId
             db(
-              "HI LUCIENNE! THE OUTPUT BELOW IS WHAT YOU CARE ABOUT. Please expand it (if there is a little plus sign, expand everything), then either take a screenshot, or copy & paste, and send it to me (David.Beaton@london.gov.uk). Thanks!"
+              'HI LUCIENNE! THE OUTPUT BELOW IS WHAT YOU CARE ABOUT. Please expand it (if there is a little plus sign, expand everything), then either take a screenshot, or copy & paste, and send it to me (David.Beaton@london.gov.uk). Thanks!'
             )
             db(result)
           }
           workspace.remove_list_item(oid)
-          swal(title, message, "success")
+          swal(title, message, 'success')
         } else {
           workspace.error()
         }
@@ -2067,9 +2076,9 @@ require([
         workspace.lock = false
       },
       clear_all_vals: function() {
-        $("#fields input").val("")
-        $("#fields input").prop("checked", false)
-        $("#fields select").each(function() {
+        $('#fields input').val('')
+        $('#fields input').prop('checked', false)
+        $('#fields select').each(function() {
           $(this)[0].selectedIndex = 0
         })
         workspace.change_type()
@@ -2080,7 +2089,7 @@ require([
 
         var query = new esri.tasks.Query()
         query.objectIds = [objectid]
-        query.outFields = ["*"]
+        query.outFields = ['*']
         query.returnGeometry = true
 
         new esri.tasks.QueryTask(mapservice).execute(
@@ -2089,13 +2098,13 @@ require([
             if (featureSet.features[0]) {
               for (var i in featureSet.features[0].attributes) {
                 var val = featureSet.features[0].attributes[i]
-                if (!val || val == 0) val = ""
-                var type = field_dropdowns[i] ? "select" : "input"
-                $("#" + i + "_row " + type)
+                if (!val || val == 0) val = ''
+                var type = field_dropdowns[i] ? 'select' : 'input'
+                $('#' + i + '_row ' + type)
                   .val(val)
                   .attr(
-                    "data-original-value",
-                    $("#" + i + "_row " + type).val()
+                    'data-original-value',
+                    $('#' + i + '_row ' + type).val()
                   )
               }
               workspace.change_type()
@@ -2116,16 +2125,16 @@ require([
       },
       show_data: function() {
         try {
-          $("#fields")
-            .find("input[type=text],select")
-            .filter(":visible:first")
+          $('#fields')
+            .find('input[type=text],select')
+            .filter(':visible:first')
             .get(0)
             .focus()
         } catch (err) {}
         resize_panel()
       },
       prompt: {
-        selector: "#thumbdrop",
+        selector: '#thumbdrop',
         hide: function() {
           workspace.prompt.set_visibility(false)
         },
@@ -2134,7 +2143,7 @@ require([
         },
         set_visibility: function(b) {
           if ((!workspace.adding || workspace.editing) && b) return
-          $(workspace.prompt.selector).css("display", b ? "block" : "none")
+          $(workspace.prompt.selector).css('display', b ? 'block' : 'none')
         },
         move: function(e) {
           if (!workspace.adding || workspace.editing) return
@@ -2158,24 +2167,24 @@ require([
           }
           if (offset.top < 0) offset.top = 0
           $(workspace.prompt.selector)
-            .css("left", offset.left)
-            .css("top", offset.top)
+            .css('left', offset.left)
+            .css('top', offset.top)
         },
       },
       error: function() {
         swal(
-          "Error",
-          "There was a problem saving your entry. Please try again later",
-          "error"
+          'Error',
+          'There was a problem saving your entry. Please try again later',
+          'error'
         )
       },
       remove_prompt: function() {
         swal(
           {
-            title: "Delete this Workspace?",
+            title: 'Delete this Workspace?',
             text:
-              "You will not be able to undo this. Are you sure you want to delete this Workspace?",
-            type: "warning",
+              'You will not be able to undo this. Are you sure you want to delete this Workspace?',
+            type: 'warning',
             showCancelButton: true,
           },
           function(b) {
@@ -2184,12 +2193,12 @@ require([
         )
       },
       logout: function() {
-        var cookies = document.cookie.split(";")
+        var cookies = document.cookie.split(';')
         for (var i = 0; i < cookies.length; i++) {
           var cookie = cookies[i]
-          var eqPos = cookie.indexOf("=")
+          var eqPos = cookie.indexOf('=')
           var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
-          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"
+          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
         }
         location.reload()
       },
@@ -2202,7 +2211,7 @@ require([
     var offset = {
       top: e.clientY - 30,
       left: e.clientX + 50,
-      width: $("#thumb").width(),
+      width: $('#thumb').width(),
     }
     if (set_orientation) {
       thumb_orientated_left =
@@ -2212,14 +2221,14 @@ require([
       offset.left = offset.left - offset.width - 125
     }
     if (offset.top < 0) offset.top = 0
-    did("thumb").style.left = offset.left + "px"
-    did("thumb").style.top = offset.top + "px"
+    did('thumb').style.left = offset.left + 'px'
+    did('thumb').style.top = offset.top + 'px'
   }
 
   function infoWindow_reposition(e) {
-    var pos = $(".esriPopupWrapper").offset()
-    pos.width = $(".esriPopupWrapper").width()
-    pos.height = $(".esriPopupWrapper").height()
+    var pos = $('.esriPopupWrapper').offset()
+    pos.width = $('.esriPopupWrapper').width()
+    pos.height = $('.esriPopupWrapper').height()
     var doc = { width: $(document).width(), height: $(document).height() }
 
     var over_right = pos.left + pos.width > doc.width
@@ -2233,36 +2242,36 @@ require([
 
     if (under_top) {
       if (over_right || doc.width - g.x < pos.width) {
-        anchor = "bottom_left"
+        anchor = 'bottom_left'
       } else if (under_left || g.x < pos.width) {
-        anchor = "bottom_right"
+        anchor = 'bottom_right'
       } else {
-        anchor = "bottom"
+        anchor = 'bottom'
       }
     } else if (over_right) {
       if (over_bottom || g.y < pos.height) {
-        anchor = "top_left"
+        anchor = 'top_left'
       } else {
-        anchor = "left"
+        anchor = 'left'
       }
     } else if (over_bottom) {
       if (under_left || g.x < pos.width) {
-        anchor = "top_right"
+        anchor = 'top_right'
       } else {
-        anchor = "top"
+        anchor = 'top'
       }
     } else if (under_left) {
       if (doc.height - g.y < pos.height) {
-        anchor = "auto"
+        anchor = 'auto'
       } else {
-        anchor = "right"
+        anchor = 'right'
       }
     }
     if (anchor) {
       map.infoWindow.anchor = anchor
       map.infoWindow.show(e.graphic.geometry)
     }
-    $(".esriPopup").css("opacity", 1)
+    $('.esriPopup').css('opacity', 1)
   }
 
   function check_reset_home() {
@@ -2294,21 +2303,21 @@ require([
       )
     } else {
       if (bigger) {
-        $(e.target).css("transformOrigin") //Just accessing this property somehow allows it to work properly!
-        $(e.target).attr("class", "animate")
+        $(e.target).css('transformOrigin') //Just accessing this property somehow allows it to work properly!
+        $(e.target).attr('class', 'animate')
 
-        var transform = $(e.target).attr("transform")
+        var transform = $(e.target).attr('transform')
         var matrix = transform
-          .substring(7, transform.indexOf(")", 7))
-          .split(",")
+          .substring(7, transform.indexOf(')', 7))
+          .split(',')
 
         matrix[4] = matrix[4] * 1 - 5
         matrix[5] = matrix[5] * 1 - 10
 
-        matrix = "matrix(" + matrix.join(",") + ") scale(1.5)"
+        matrix = 'matrix(' + matrix.join(',') + ') scale(1.5)'
         $(e.target).css({ transform: matrix })
       } else {
-        $(e.target).css({ transform: $(e.target).attr("transform") })
+        $(e.target).css({ transform: $(e.target).attr('transform') })
       }
     }
   }
@@ -2339,19 +2348,19 @@ require([
 
   function resize_panel() {
     var h =
-      $("#panel #content").height() -
-      ($("#panel").offset().top + $("#panel").height() - $(window).height()) -
+      $('#panel #content').height() -
+      ($('#panel').offset().top + $('#panel').height() - $(window).height()) -
       (is_mobile() ? 0 : 25)
-    $("#panel #content").css((is_mobile() ? "" : "max-") + "height", h)
+    $('#panel #content').css((is_mobile() ? '' : 'max-') + 'height', h)
   }
 
   function is_mobile() {
-    return $("body").width() <= 600
+    return $('body').width() <= 600
   }
 
   function is_touch_device() {
     return (
-      "ontouchstart" in window || navigator.maxTouchPoints // works on most browsers
+      'ontouchstart' in window || navigator.maxTouchPoints // works on most browsers
     ) // works on IE10/11 and Surface
   }
 
@@ -2364,10 +2373,10 @@ require([
       doc_width,
       $(document).height(),
       new esri.geometry.Extent(
-        $("#panel").position().left,
-        $("#panel").position().top,
-        $("#panel").position().left + $("#panel").width(),
-        $("#panel").position().top + $("#panel").height(),
+        $('#panel').position().left,
+        $('#panel').position().top,
+        $('#panel').position().left + $('#panel').width(),
+        $('#panel').position().top + $('#panel').height(),
         e.spatialReference
       )
     )
@@ -2376,20 +2385,20 @@ require([
   }
 
   function once_only(name) {
-    if (typeof Storage === "undefined" || localStorage.getItem(name))
+    if (typeof Storage === 'undefined' || localStorage.getItem(name))
       return false
     store(name, 1)
     return true
   }
 
   function check_for_auto_show_about_popup() {
-    if (!is_admin && once_only("auto_about_popup")) {
+    if (!is_admin && once_only('auto_about_popup')) {
       about_map()
     }
   }
 
   function html_encode(value) {
-    return $("<div/>")
+    return $('<div/>')
       .text(value)
       .html()
   }
@@ -2399,7 +2408,7 @@ require([
       map.removeLayer(clusterLayer)
     }
 
-    var show_all = filter == "1=1"
+    var show_all = filter == '1=1'
 
     if (show_all && all_points_clusterer) {
       clusterLayer = all_points_clusterer
@@ -2408,25 +2417,25 @@ require([
       var sms = SimpleMarkerSymbol
 
       var one = new sms(
-        "circle",
+        'circle',
         5,
         new sls(sls.STYLE_SOLID, new Color([0, 0, 0, 0.25]), 15),
         new Color([0, 196, 19, 1])
       )
       var small = new sms(
-        "circle",
+        'circle',
         20,
         new sls(sls.STYLE_SOLID, new Color([0, 74, 127, 0.25]), 15),
         new Color([0, 74, 127, 0.7])
       )
       var medium = new sms(
-        "circle",
+        'circle',
         30,
         new sls(sls.STYLE_SOLID, new Color([148, 0, 211, 0.25]), 15),
         new Color([148, 0, 211, 0.7])
       )
       var large = new sms(
-        "circle",
+        'circle',
         38,
         new sls(sls.STYLE_SOLID, new Color([210, 0, 0, 0.25]), 15),
         new Color([210, 0, 0, 0.7])
@@ -2435,9 +2444,9 @@ require([
       var ops = {
         url: mapservice,
         distance: 80,
-        id: "clusters",
-        labelColor: "#fff",
-        outFields: ["objectid"],
+        id: 'clusters',
+        labelColor: '#fff',
+        outFields: ['objectid'],
         showSingles: false,
         resolution: map.extent.getWidth() / map.width,
         singleSymbol: one,
@@ -2454,7 +2463,7 @@ require([
         locations.setVisibility(false)
       }
 
-      clusterLayer.on("clusters-shown", function() {
+      clusterLayer.on('clusters-shown', function() {
         if (clusterLayer.visible) {
           check_for_points()
           show_loader(false)
@@ -2464,7 +2473,7 @@ require([
 
       if (show_all) all_points_clusterer = clusterLayer
 
-      var renderer = new ClassBreaksRenderer(null, "clusterCount")
+      var renderer = new ClassBreaksRenderer(null, 'clusterCount')
 
       renderer.addBreak(0, 9, small)
       renderer.addBreak(9, 50, medium)
@@ -2478,7 +2487,7 @@ require([
 
   function symbol(color, size) {
     var icon =
-      "M502.054,217.876C502.054,97.531,404.501,0,284.168,0C165.532,0,69.207,94.894,66.535,212.902 c-0.082-0.039-0.178-0.039-0.251-0.039c-0.052,1.067,0.117,2.143,0.091,3.218c-0.009,0.594-0.091,1.197-0.091,1.795 c0,2.165,0.269,4.255,0.33,6.393c2.451,141.576,162.473,290.959,217.556,344.134C438.86,442.987,483.89,326.654,496.901,264.623c0.478-2.177,0.894-4.341,1.293-6.519c1.258-6.679,2.125-12.669,2.732-17.8c0-0.065,0.017-0.125,0.017-0.187 C502.565,225.779,502.054,217.876,502.054,217.876L502.054,217.876z"
+      'M502.054,217.876C502.054,97.531,404.501,0,284.168,0C165.532,0,69.207,94.894,66.535,212.902 c-0.082-0.039-0.178-0.039-0.251-0.039c-0.052,1.067,0.117,2.143,0.091,3.218c-0.009,0.594-0.091,1.197-0.091,1.795 c0,2.165,0.269,4.255,0.33,6.393c2.451,141.576,162.473,290.959,217.556,344.134C438.86,442.987,483.89,326.654,496.901,264.623c0.478-2.177,0.894-4.341,1.293-6.519c1.258-6.679,2.125-12.669,2.732-17.8c0-0.065,0.017-0.125,0.017-0.187 C502.565,225.779,502.054,217.876,502.054,217.876L502.054,217.876z'
     var markerSymbol = new esri.symbol.SimpleMarkerSymbol()
     markerSymbol.setPath(icon)
     markerSymbol.setColor(Color.fromHex(color))
@@ -2496,24 +2505,24 @@ require([
 
   function clean_title(name, part) {
     part = part ? 1 : 0
-    name = name || ""
-    if (name.indexOf("@@@") != -1) name = name.split("@@@")[part]
+    name = name || ''
+    if (name.indexOf('@@@') != -1) name = name.split('@@@')[part]
     return name.stripslashes()
   }
 
   function fetch_new_workspaces(e) {
     var query = new esri.tasks.Query()
-    query.where = "verified=0"
-    query.outFields = ["objectid", "site_name", "edit_id"]
+    query.where = 'verified=0'
+    query.outFields = ['objectid', 'site_name', 'edit_id']
     var edits_already_output = {}
     new esri.tasks.QueryTask(mapservice).execute(query, function(featureSet) {
-      var new_out = "",
-        edit_out = ""
+      var new_out = '',
+        edit_out = ''
       for (var i in featureSet.features) {
         var a = featureSet.features[i].attributes
-        if (a["edit_id"]) {
-          if (!edits_already_output[a["edit_id"]]) {
-            edits_already_output[a["edit_id"]] = true
+        if (a['edit_id']) {
+          if (!edits_already_output[a['edit_id']]) {
+            edits_already_output[a['edit_id']] = true
             edit_out +=
               "<div id='objlink_" +
               a.edit_id +
@@ -2521,7 +2530,7 @@ require([
               a.edit_id +
               ", true)'>" +
               clean_title(a.site_name) +
-              "</div>"
+              '</div>'
           }
         } else {
           new_out +=
@@ -2531,28 +2540,28 @@ require([
             a.objectid +
             ")'>" +
             a.site_name +
-            "</div>"
+            '</div>'
         }
       }
-      $("#new_points").html(new_out)
-      $("#edited_points").html(edit_out)
+      $('#new_points').html(new_out)
+      $('#edited_points').html(edit_out)
       update_new_count()
     })
   }
 
   function update_new_count(v) {
-    var new_points = $("#new_points > div").length
-    var edited_points = $("#edited_points > div").length
+    var new_points = $('#new_points > div').length
+    var edited_points = $('#edited_points > div').length
     var num = new_points + edited_points
 
-    $("#new_count").html(num == 0 ? "" : "(" + num + ")")
+    $('#new_count').html(num == 0 ? '' : '(' + num + ')')
 
-    $("#new_points_subtitle").css("display", new_points == 0 ? "none" : "block")
-    $("#edited_points_subtitle").css(
-      "display",
-      edited_points == 0 ? "none" : "block"
+    $('#new_points_subtitle').css('display', new_points == 0 ? 'none' : 'block')
+    $('#edited_points_subtitle').css(
+      'display',
+      edited_points == 0 ? 'none' : 'block'
     )
-    $("#no_points_warning").css("display", num == 0 ? "block" : "none")
+    $('#no_points_warning').css('display', num == 0 ? 'block' : 'none')
   }
 
   var no_points_found = false
@@ -2562,22 +2571,22 @@ require([
 			no_points_found = false;
 			return clear_filters();
 		}*/
-    if (workspace_type() == "New") return
+    if (workspace_type() == 'New') return
     if (last_filter) {
       var undo_filter_action
-      if (last_filter == "service") {
+      if (last_filter == 'service') {
         undo_filter_action = services.undo
-      } else if (last_filter == "sector") {
+      } else if (last_filter == 'sector') {
         undo_filter_action = sectors.undo
-      } else if (last_filter == "charge") {
+      } else if (last_filter == 'charge') {
         undo_filter_action = charges.undo
-      } else if (last_filter == "workspace_type") {
+      } else if (last_filter == 'workspace_type') {
         undo_filter_action = workspace_types.undo
       } else {
         undo_filter_action = function() {
-          var filters = ["type"]
+          var filters = ['type']
           for (var x = 0; x < filters.length; x++) {
-            var f = "filter_" + filters[x]
+            var f = 'filter_' + filters[x]
             if (f != last_filter) {
               did(f).value = -1
             }
@@ -2589,12 +2598,12 @@ require([
         no_points_found = true
         swal(
           {
-            title: "No Results!",
-            text: "Would you like to undo your previous filters?",
-            type: "warning",
+            title: 'No Results!',
+            text: 'Would you like to undo your previous filters?',
+            type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Undo Filters",
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Undo Filters',
             closeOnConfirm: true,
           },
           undo_filter_action
@@ -2602,7 +2611,7 @@ require([
       } catch (err) {
         //Something in the library isn't supported
         if (
-          confirm("No Results! Would you like to undo your previous filters?")
+          confirm('No Results! Would you like to undo your previous filters?')
         )
           undo_filter_action()
       }
@@ -2611,9 +2620,9 @@ require([
   }
 
   function workspace_type() {
-    return $("input:radio[name='workspace_type']:checked").val() == "New"
-      ? "New"
-      : "Office"
+    return $("input:radio[name='workspace_type']:checked").val() == 'New'
+      ? 'New'
+      : 'Office'
   }
 
   function getTextContent(graphic) {
@@ -2622,89 +2631,89 @@ require([
     var out = infoclickdisplay(a)
 
     if (is_mobile()) {
-      $("#back_to_map #title").html(format_title(graphic))
-      $("#back_to_map #content").html(out)
-      $("body").addClass("showinfo")
-      return ""
+      $('#back_to_map #title').html(format_title(graphic))
+      $('#back_to_map #content').html(out)
+      $('body').addClass('showinfo')
+      return ''
     } else {
-      $(".esriPopup").toggleClass("long_name", a["site_name"].length > 24)
-      $(".esriPopup .titlePane").css("background", "#9E0059")
+      $('.esriPopup').toggleClass('long_name', a['site_name'].length > 24)
+      $('.esriPopup .titlePane').css('background', '#9E0059')
       return out
     }
   }
 
   function infoclickdisplay(a) {
-    var out = $("#popup_content_template").html()
+    var out = $('#popup_content_template').html()
 
     var check = function(code, field, is_raw) {
       var val = is_raw ? field : a[field]
       var valid = has_val(val)
       if (valid) {
-        out = out.replace("$" + code + "$", val)
+        out = out.replace('$' + code + '$', val)
       } else {
-        var p = $("<div></div>").html(out)
-        p.find("." + code + "_holder").remove()
+        var p = $('<div></div>').html(out)
+        p.find('.' + code + '_holder').remove()
         out = p.html()
       }
       return valid
     }
 
-    check("TYPE", "site_type")
+    check('TYPE', 'site_type')
 
-    check("YEAR", "year_established__site_")
-    check("DESKS", "number_of_desks__studios__workb")
+    check('YEAR', 'year_established__site_')
+    check('DESKS', 'number_of_desks__studios__workb')
 
-    if (!has_val(a["provision_type"])) a["provision_type"] = "Desks"
-    check("DESKTYPE", "provision_type")
+    if (!has_val(a['provision_type'])) a['provision_type'] = 'Desks'
+    check('DESKTYPE', 'provision_type')
 
-    var cost2 = a["cost_of_studios__£_sqft_pa_"]
-    if (cost2) cost2 = "£" + cost2 + " per square foot"
-    check("FOOTAGE", cost2, true)
+    var cost2 = a['cost_of_studios__£_sqft_pa_']
+    if (cost2) cost2 = '£' + cost2 + ' per square foot'
+    check('FOOTAGE', cost2, true)
 
-    var cost = a["cost_month__exact_"]
-    if (cost) cost = "£" + cost + " per month (" + a["cost_month_type"] + ")"
-    else if (!cost2) cost = "Price on Inquiry" //i.e. no costs at all associated with this workspace
-    check("COST", cost, true)
+    var cost = a['cost_month__exact_']
+    if (cost) cost = '£' + cost + ' per month (' + a['cost_month_type'] + ')'
+    else if (!cost2) cost = 'Price on Inquiry' //i.e. no costs at all associated with this workspace
+    check('COST', cost, true)
 
     /*var sectors = a["sectors_catered_for"];
 		if (sectors) sectors = sectors.replace(/\,/g, ", ");
 		check("SECTORS", sectors, true);*/
 
     if (
-      has_val(a["post_code"]) &&
-      has_val(a["address"]) &&
-      a["address"].slice(-1) != ","
+      has_val(a['post_code']) &&
+      has_val(a['address']) &&
+      a['address'].slice(-1) != ','
     )
-      a["address"] += ","
-    check("ADDRESS", "address")
+      a['address'] += ','
+    check('ADDRESS', 'address')
 
-    if (has_val(a["address"]) && a["address"].indexOf(a["post_code"]) != -1)
-      a["post_code"] = ""
-    check("POSTCODE", "post_code")
+    if (has_val(a['address']) && a['address'].indexOf(a['post_code']) != -1)
+      a['post_code'] = ''
+    check('POSTCODE', 'post_code')
 
-    var phone = a["site_telephone"]
-    if (has_val(phone)) phone = "<a href='tel:" + phone + "'>" + phone + "</a>"
-    var has_contact = check("PHONE", phone, true)
+    var phone = a['site_telephone']
+    if (has_val(phone)) phone = "<a href='tel:" + phone + "'>" + phone + '</a>'
+    var has_contact = check('PHONE', phone, true)
 
     has_contact =
-      check("EMAIL", "generic_email__space_enquiries_") || has_contact
+      check('EMAIL', 'generic_email__space_enquiries_') || has_contact
 
-    a["website"] = urlify(a["website"])
-    has_contact = check("WEBSITE", "website") || has_contact
+    a['website'] = urlify(a['website'])
+    has_contact = check('WEBSITE', 'website') || has_contact
 
     setTimeout(function() {
-      $(".contact").css("display", has_contact ? "block" : "none")
+      $('.contact').css('display', has_contact ? 'block' : 'none')
     }, 1)
 
-    a["facebook"] = urlify(a["facebook"])
-    check("FACEBOOK", "facebook")
+    a['facebook'] = urlify(a['facebook'])
+    check('FACEBOOK', 'facebook')
 
-    a["twitter"] = urlify(a["twitter"])
-    check("TWITTER", "twitter")
+    a['twitter'] = urlify(a['twitter'])
+    check('TWITTER', 'twitter')
 
-    var services = ""
-    if (has_val(a["services"])) {
-      var thisservices = a["services"].split(",")
+    var services = ''
+    if (has_val(a['services'])) {
+      var thisservices = a['services'].split(',')
       for (i in thisservices) {
         var val = thisservices[i].trim()
         if (
@@ -2716,104 +2725,104 @@ require([
             "<div><img src='images/icons/" +
             val
               .toLowerCase()
-              .replace(/ /gi, "_")
-              .replace("/", "") +
+              .replace(/ /gi, '_')
+              .replace('/', '') +
             ".gif' title='" +
             val +
             " available'><span>" +
             val.titlefy() +
-            "</span></div> "
+            '</span></div> '
         }
       }
       setTimeout(function() {
-        $(".SERVICES_holder")
-          .find("img")
+        $('.SERVICES_holder')
+          .find('img')
           .click(function() {
             swal(
-              "",
+              '',
               $(this)
-                .attr("title")
+                .attr('title')
                 .titlefy(),
-              "info"
+              'info'
             )
           })
       }, 1)
     }
-    check("SERVICES", services, true)
+    check('SERVICES', services, true)
 
-    var button_extra = !a["facebook"] && !a["twitter"] ? ";margin-top:-7px" : ""
-    var action = a["edit_id"]
-      ? "workspace.edit(" + a["edit_id"] + ", true)"
-      : "workspace.edit(" + a["objectid"] + ")"
-    var text = a["verified"] ? "Suggest an Edit" : "Start Verifying"
+    var button_extra = !a['facebook'] && !a['twitter'] ? ';margin-top:-7px' : ''
+    var action = a['edit_id']
+      ? 'workspace.edit(' + a['edit_id'] + ', true)'
+      : 'workspace.edit(' + a['objectid'] + ')'
+    var text = a['verified'] ? 'Suggest an Edit' : 'Start Verifying'
     var unbuttonify_css = is_admin
-      ? ""
-      : "padding:20px 0 0;background:transparent;color:#9e0059;"
+      ? ''
+      : 'padding:20px 0 0;background:transparent;color:#9e0059;'
     out +=
       "<div class='button' onclick='" +
       action +
       "' style='" +
       unbuttonify_css +
-      "margin-bottom:-5px" +
+      'margin-bottom:-5px' +
       button_extra +
       "'>" +
       text +
-      "</div>"
+      '</div>'
 
     return out
   }
 
   function get_category(cat) {
     switch (cat) {
-      case "Co-working":
-        return "Office"
-      case "Artist studios":
-        return "Artist"
-      case "Makerspace":
-        return "Maker"
-      case "Accelerator":
-        return "Accelerator"
-      case "Incubator":
-        return "Incubator"
-      case "Kitchen":
-        return "Kitchen"
+      case 'Co-working':
+        return 'Office'
+      case 'Artist studios':
+        return 'Artist'
+      case 'Makerspace':
+        return 'Maker'
+      case 'Accelerator':
+        return 'Accelerator'
+      case 'Incubator':
+        return 'Incubator'
+      case 'Kitchen':
+        return 'Kitchen'
     }
   }
 
   function get_site_type(cat) {
     switch (cat) {
-      case "Office":
-        return "Co-working"
-      case "Artist":
-        return "Artist studios"
-      case "Maker":
-        return "Makerspace"
-      case "Accelerator":
-        return "Accelerator"
-      case "Incubator":
-        return "Incubator"
-      case "Kitchen":
-        return "Kitchen"
+      case 'Office':
+        return 'Co-working'
+      case 'Artist':
+        return 'Artist studios'
+      case 'Maker':
+        return 'Makerspace'
+      case 'Accelerator':
+        return 'Accelerator'
+      case 'Incubator':
+        return 'Incubator'
+      case 'Kitchen':
+        return 'Kitchen'
     }
   }
 
   function has_val(val) {
     return (
       $.inArray(val, [
-        "",
+        '',
         false,
-        "Null",
-        "null",
-        "<Null>",
-        "na",
-        "NA",
-        "#N/A",
-        "n/a",
-        "N/A",
-        "Supp",
-        "#VALUE!",
+        'Null',
+        'null',
+        '<Null>',
+        'na',
+        'NA',
+        '#N/A',
+        'n/a',
+        'N/A',
+        'Supp',
+        '#VALUE!',
         0,
-        "0",
+        '0',
         undefined,
         null,
       ]) == -1
@@ -2821,15 +2830,15 @@ require([
   }
 
   function urlify(val) {
-    if (has_val(val) && val.indexOf("//") == -1) val = "http://" + val
+    if (has_val(val) && val.indexOf('//') == -1) val = 'http://' + val
     return val
   }
 
   function check_search_highlight() {
     if (highlight_search) {
       for (var x = 0; x < locations.graphics.length; x++) {
-        if (locations.graphics[x].attributes["objectid"] == highlight_search) {
-          locations.graphics[x].setSymbol(symbol("#FF00F2", 40))
+        if (locations.graphics[x].attributes['objectid'] == highlight_search) {
+          locations.graphics[x].setSymbol(symbol('#FF00F2', 40))
           move_to_front(locations.graphics[x])
           setTimeout(function() {
             locations.graphics[x].setSymbol(
@@ -2876,9 +2885,9 @@ require([
   function check_network() {
     if (!connection_exists()) {
       swal(
-        "No Internet Connection",
-        "Please reconnect and try again.",
-        "warning"
+        'No Internet Connection',
+        'Please reconnect and try again.',
+        'warning'
       ) //Can't do connection icon, because there's no connection to download it!
       show_loader(false)
       return false
@@ -2888,9 +2897,9 @@ require([
 
   function connection_exists() {
     var xhr = new XMLHttpRequest()
-    var file = "https://maps.london.gov.uk/utils/connection-test/blank.gif"
+    var file = 'https://maps.london.gov.uk/utils/connection-test/blank.gif'
     var randomNum = Math.round(Math.random() * 10000)
-    xhr.open("HEAD", file + "?rand=" + randomNum, false)
+    xhr.open('HEAD', file + '?rand=' + randomNum, false)
     try {
       xhr.send()
       return xhr.status >= 200 && xhr.status < 304
@@ -2936,26 +2945,26 @@ require([
 
   function getvar(name, url) {
     if (!url) url = window.location.href
-    name = name.replace(/[\[\]]/g, "\\$&")
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    name = name.replace(/[\[\]]/g, '\\$&')
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
       results = regex.exec(url)
     if (!results) return null
-    if (!results[2]) return ""
-    return decodeURIComponent(results[2].replace(/\+/g, " "))
+    if (!results[2]) return ''
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
   }
 
   function show_big_loader(b) {
-    $("body").toggleClass("bigloading", b)
+    $('body').toggleClass('bigloading', b)
   }
 
   function show_loader(b) {
-    $("body").toggleClass("loading", b)
+    $('body').toggleClass('loading', b)
     if (!b) show_big_loader(false)
   }
 
   function apply_pins_filters() {
     //update_pins_flag = false;
-    db("SETTING locations expression to: " + filter)
+    db('SETTING locations expression to: ' + filter)
     locations.setDefinitionExpression(filter)
   }
 
@@ -2997,12 +3006,12 @@ require([
 
   function get_var(name, url) {
     if (!url) url = window.location.href
-    name = name.replace(/[\[\]]/g, "\\$&")
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    name = name.replace(/[\[\]]/g, '\\$&')
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
       results = regex.exec(url)
     if (!results) return null
-    if (!results[2]) return ""
-    return decodeURIComponent(results[2].replace(/\+/g, " "))
+    if (!results[2]) return ''
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
   }
 
   function did(id) {
@@ -3013,15 +3022,15 @@ require([
     //Debug to the console
     try {
       var stack = new Error().stack
-        .replace(/^[^\(]+?[\n$]/gm, "")
-        .replace(/^\s+at\s+/gm, "")
-        .split("\n")
+        .replace(/^[^\(]+?[\n$]/gm, '')
+        .replace(/^\s+at\s+/gm, '')
+        .split('\n')
       stack =
-        stack[1].split(":")[2] +
-        " (" +
-        stack[1].substring(0, stack[1].indexOf("(") - 1) +
-        ")"
-      console.log(" ") //new line
+        stack[1].split(':')[2] +
+        ' (' +
+        stack[1].substring(0, stack[1].indexOf('(') - 1) +
+        ')'
+      console.log(' ') //new line
       if (arguments.length == 0) {
         console.log(stack)
       } else {
@@ -3036,32 +3045,32 @@ require([
 })
 
 String.prototype.titlefy = function() {
-  return this.replace(/\_/g, " ").replace(/\w\S*/g, function(txt) {
+  return this.replace(/\_/g, ' ').replace(/\w\S*/g, function(txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   })
 }
 String.prototype.addslashes = function() {
   //no need to do (str+'') anymore because 'this' can only be a string
-  return this.replace(/[\\"']/g, "\\$&").replace(/\u0000/g, "\\0")
+  return this.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
 }
 String.prototype.stripslashes = function() {
-  return this.replace(/\\(.)/gm, "$1")
+  return this.replace(/\\(.)/gm, '$1')
 }
 
 $(function() {
-  if (!is_admin) $(".admin").remove()
-  $("#type_options")
+  if (!is_admin) $('.admin').remove()
+  $('#type_options')
     .buttonset()
-    .on("change", function() {
+    .on('change', function() {
       workspace.prices.clear()
       workspace.prices2.clear()
       do_filter()
     })
-    .css("visibility", "visible")
+    .css('visibility', 'visible')
 
   //Handle case where no mailto client is set
-  $("a[href^=mailto]").each(function() {
-    var href = $(this).attr("href")
+  $('a[href^=mailto]').each(function() {
+    var href = $(this).attr('href')
     $(this).click(function() {
       var t
       $(window).blur(function() {
@@ -3069,20 +3078,20 @@ $(function() {
       })
       t = setTimeout(function() {
         swal({
-          title: "Copy This",
-          text: "You can paste the following link into an email:",
-          type: "input",
+          title: 'Copy This',
+          text: 'You can paste the following link into an email:',
+          type: 'input',
           inputValue:
             "London's Open Workspaces: https://maps.london.gov.uk/workspaces/",
         })
-        $(".sweet-alert input[type=text]").select()
-        document.execCommand("copy")
+        $('.sweet-alert input[type=text]').select()
+        document.execCommand('copy')
       }, 500)
     })
   })
 
   if (is_admin) {
     //$("body").addClass("admin");
-    $("#main_logo").attr("href", "admin")
+    $('#main_logo').attr('href', 'admin')
   }
 })
